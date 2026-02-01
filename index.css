@@ -158,23 +158,23 @@ body {
     border: none !important;
     transition: all 0.2s;
     overflow: hidden;
-    padding: 0.75rem !important;
+    padding: 0.5rem !important;
     min-height: 0;
-    /* 세로 공간 확보를 위해 aspect-ratio 조정 (약간 더 옆으로 긴 형태) */
-    aspect-ratio: 1.1 / 1;
+    /* 세로 공간 확보를 위해 aspect-ratio 조정 */
+    aspect-ratio: 1.2 / 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 .mission-card span {
-    font-size: 2.2rem !important;
-    margin-bottom: 0.25rem;
+    font-size: 2rem !important;
+    margin-bottom: 0.1rem;
 }
 
 .mission-card p.font-black.text-\[15px\] {
-    font-size: 0.9rem !important;
-    line-height: 1.1;
+    font-size: 0.85rem !important;
+    line-height: 1;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -186,8 +186,8 @@ body {
 }
 
 .mission-card p.text-2xl {
-    font-size: 1.1rem !important;
-    margin-top: auto;
+    font-size: 1rem !important;
+    margin-top: 2px;
     color: white !important;
 }
 
@@ -210,24 +210,27 @@ body {
         max-width: 1920px;
         margin: 0 auto;
         overflow: hidden !important;
-        /* 스크롤바 원천 차단 */
         height: 100vh !important;
     }
 
     #home-screen {
-        padding: 2vh 3vw !important;
-        gap: 2vh !important;
+        padding: 1.5vh 2.5vw !important;
+        gap: 1.5vh !important;
         height: 100vh !important;
         display: flex !important;
         flex-direction: column !important;
         overflow: hidden !important;
     }
 
-    /* 상단 헤더 공간 축소 */
+    /* 상단 헤더 공간 축소 (프로필 영역) */
     #home-screen>div:first-child {
-        height: min(120px, 15vh) !important;
-        min-height: 80px !important;
+        height: min(100px, 12vh) !important;
+        min-height: 70px !important;
         flex-shrink: 0;
+    }
+
+    #home-screen>div:first-child .card {
+        padding: 0.5rem 1.5rem !important;
     }
 
     /* 메인 워크스페이스 공간 축소 및 자동 배분 */
@@ -235,29 +238,54 @@ body {
         flex: 1 !important;
         min-height: 0 !important;
         height: 0 !important;
-        /* flex-grow가 작동하도록 */
+        gap: 1.25rem !important;
     }
 
-    /* 미션 그리드 보정 */
+    /* 미션 그리드 보정 (패딩 및 갭 축소) */
     #mission-grid {
         grid-template-columns: repeat(6, 1fr) !important;
-        gap: 0.75rem !important;
+        gap: 0.5rem !important;
         align-content: start;
+        padding-top: 0.5rem !important;
         overflow-y: auto !important;
+    }
+
+    /* 사이드바 액션 버튼 텍스트 축소 */
+    .col-span-4.flex.flex-col.gap-6 button p {
+        font-size: 1.1rem !important;
+    }
+
+    .col-span-4.flex.flex-col.gap-6 button {
+        padding: 0.75rem !important;
+        gap: 0.5rem !important;
+    }
+
+    .col-span-4.flex.flex-col.gap-6 {
+        gap: 1rem !important;
+    }
+
+    /* 하단 벤트형 카드 패딩 축소 */
+    .bento-card {
+        padding: 1rem !important;
+    }
+
+    .bento-card h3 {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.5rem !important;
     }
 
     /* 회전 가드 텍스트 축소 */
     #landscape-guard span.material-symbols-rounded {
-        font-size: 80px !important;
-        margin-bottom: 20px !important;
+        font-size: 60px !important;
+        margin-bottom: 15px !important;
     }
 
     #landscape-guard h1 {
-        font-size: clamp(2rem, 5vw, 3rem) !important;
+        font-size: clamp(1.5rem, 4vw, 2.5rem) !important;
     }
 
     #landscape-guard p {
-        font-size: clamp(1rem, 2vw, 1.2rem) !important;
+        font-size: clamp(0.9rem, 1.5vw, 1.1rem) !important;
     }
 }
 
