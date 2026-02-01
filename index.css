@@ -20,7 +20,12 @@ body {
 }
 
 #app {
+    width: 100vw;
+    height: 100vh;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     /* 반응형을 위한 글로벌 폰트 사이즈 변수 */
     --h1-size: clamp(2rem, 6vh, 4.5rem);
     --h2-size: clamp(1.5rem, 4vh, 3rem);
