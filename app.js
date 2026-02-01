@@ -935,9 +935,33 @@ async function purchaseCustomGift() {
 
 // ===== 대시보드 =====
 function openDashboard() {
-    renderDashboard();
+    try {
+        renderDashboard();
+    } catch (e) {
+        console.error("Dashboard Render Error:", e);
+        // Even if rendering fails, we should try to show the screen
+    }
     document.getElementById('home-screen').classList.add('hidden');
     document.getElementById('dashboard-screen').classList.remove('hidden');
+}
+
+// Chart Instances
+let dailyLineChartInstance = null;
+let missionPieChartInstance = null;
+
+function renderDashboard() {
+    console.log("Rendering Dashboard. State:", state);
+    console.log("Activities:", state.activitiesByDate);
+    console.log("Purchase History:", state.purchaseHistory);
+    console.log("Mission Counts:", state.missionCounts);
+
+    renderBestDay();
+    renderCumulativePoints();
+    renderWeeklyAverage();
+    renderDailyLineChart();
+    renderMissionPieChart();
+    renderGiftHistory();
+    renderTopMissions();
 }
 
 function closeDashboard() {
@@ -945,111 +969,92 @@ function closeDashboard() {
     document.getElementById('home-screen').classList.remove('hidden');
 }
 
-function renderDashboard() {
-    renderMonthlyChart();
-    renderBestDay();
-    renderCumulativePoints();
-    renderTopMissions();
-    renderGiftHistory();
-    renderGoalHistory();
-}
-
 function renderCumulativePoints() {
     const el = document.getElementById('cumulative-score');
     if (!el) return;
 
     let totalEarned = 0;
-    Object.values(state.activitiesByDate).forEach(dayActivities => {
-        totalEarned += dayActivities
-            .filter(a => a.pts > 0)
-            .reduce((sum, a) => sum + a.pts, 0);
-    });
+    let hasData = false;
 
-    // 목표 보상도 누적 포인트에 포함
-    state.goalHistory.forEach(item => {
-        totalEarned += item.reward;
-    });
-
-    el.textContent = totalEarned.toLocaleString() + 'P';
-}
-
-function renderMonthlyChart() {
-    const chart = document.getElementById('monthly-chart');
-    if (!chart) return;
-    chart.innerHTML = '';
-
-    const monthlyScores = {};
-    Object.keys(state.activitiesByDate).forEach(key => {
-        const month = key.substring(0, 7);
-        const dayScore = state.activitiesByDate[key]
-            .filter(a => a.pts > 0)
-            .reduce((sum, a) => sum + a.pts, 0);
-        monthlyScores[month] = (monthlyScores[month] || 0) + dayScore;
-    });
-
-    const months = [];
-    const now = new Date();
-    for (let i = 4; i >= 0; i--) {
-        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-        months.push({
-            key: key,
-            label: `${d.getMonth() + 1}월`,
-            score: monthlyScores[key] || 0,
-            isCurrent: i === 0
+    // 1. Try Internal State
+    if (state.activitiesByDate) {
+        Object.values(state.activitiesByDate).forEach(dayActivities => {
+            totalEarned += dayActivities
+                .filter(a => a.pts > 0)
+                .reduce((sum, a) => sum + a.pts, 0);
+            if (dayActivities.length > 0) hasData = true;
         });
     }
 
-    const maxScore = Math.max(...months.map(m => m.score), 1);
+    // Add rewards
+    if (state.goalHistory) {
+        state.goalHistory.forEach(item => {
+            totalEarned += item.reward;
+        });
+    }
 
-    months.forEach(month => {
-        const height = (month.score / maxScore) * 100;
-        const barWrapper = document.createElement('div');
-        barWrapper.className = 'flex-1 flex flex-col items-center h-full justify-end';
+    // 2. Fallback: Check 'totalScore' (Direct Key)
+    if (totalEarned === 0 && !hasData) {
+        const directTotal = localStorage.getItem('totalScore');
+        if (directTotal) {
+            totalEarned = parseInt(directTotal, 10);
+            hasData = true;
+        }
+    }
 
-        // 영역이 좁아졌으므로 크기 최적화
-        const displayHeight = Math.max(height * 0.7, 2);
+    // 3. Fallback: Check '칭찬항아리_통계'
+    if (totalEarned === 0 && !hasData) {
+        const stats = JSON.parse(localStorage.getItem('칭찬항아리_통계')) || {};
+        if (stats.totalScore) {
+            totalEarned = stats.totalScore;
+        }
+    }
 
-        barWrapper.innerHTML = `
-            <div class="relative w-full flex flex-col items-center justify-end h-[75%]">
-                <!-- 점수 표시 -->
-                <div class="mb-2 px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded-lg text-sm font-black shadow-sm z-20 border border-indigo-100">
-                    ${month.score}
-                </div>
-                
-                <!-- 바 -->
-                <div class="w-8 sm:w-12 rounded-t-xl rounded-b-md transition-all duration-1000 relative overflow-hidden flex flex-col justify-end shadow-md ${month.isCurrent ? 'bg-gradient-to-t from-indigo-600 to-indigo-400' : 'bg-gradient-to-t from-gray-200 to-gray-100'}" 
-                     style="height: ${displayHeight}%">
-                    <div class="absolute top-0 inset-x-0 h-1/3 bg-white/10"></div>
-                </div>
-            </div>
-            
-            <p class="mt-3 text-sm font-black ${month.isCurrent ? 'text-indigo-600' : 'text-gray-400'} tracking-tight">${month.label}</p>
-        `;
-        chart.appendChild(barWrapper);
-    });
+    el.textContent = totalEarned.toLocaleString() + 'P';
 }
 
 function renderBestDay() {
     let bestScore = 0;
     let bestDate = null;
+    let hasData = false;
 
-    Object.keys(state.activitiesByDate).forEach(key => {
-        // 일관성을 위해 획득(Earned) 점수 기준으로 계산
-        const dayScore = state.activitiesByDate[key]
-            .filter(a => a.pts > 0)
-            .reduce((sum, a) => sum + a.pts, 0);
+    // 1. Try Internal State
+    if (state.activitiesByDate) {
+        Object.keys(state.activitiesByDate).forEach(key => {
+            const dayScore = state.activitiesByDate[key]
+                .filter(a => a.pts > 0)
+                .reduce((sum, a) => sum + a.pts, 0);
 
-        if (dayScore > bestScore) {
-            bestScore = dayScore;
-            bestDate = key;
+            if (dayScore > bestScore) {
+                bestScore = dayScore;
+                bestDate = key;
+            }
+            hasData = true;
+        });
+    }
+
+    // 2. Fallback: Check 'maxDailyScore' (Direct Key)
+    if (bestScore === 0 && !hasData) {
+        const directMax = localStorage.getItem('maxDailyScore');
+        if (directMax) {
+            bestScore = parseInt(directMax, 10);
+            hasData = true;
         }
-    });
+    }
+
+    // 3. Fallback: Check '칭찬항아리_통계'
+    if (bestScore === 0 && !hasData) {
+        const stats = JSON.parse(localStorage.getItem('칭찬항아리_통계')) || {};
+        if (stats.maxScore) {
+            bestScore = stats.maxScore;
+        }
+    }
 
     const scoreEl = document.getElementById('best-day-score');
     const dateEl = document.getElementById('best-day-date');
     if (scoreEl) scoreEl.textContent = (bestScore || 0) + 'P';
 
+    // Date fallback
     if (dateEl && bestDate) {
         const d = new Date(bestDate);
         dateEl.textContent = `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
@@ -1058,106 +1063,291 @@ function renderBestDay() {
     }
 }
 
-function renderTopMissions() {
-    const goodContainer = document.getElementById('top-missions-good');
-    const badContainer = document.getElementById('top-missions-bad');
-    if (!goodContainer || !badContainer) return;
 
-    goodContainer.innerHTML = '';
-    badContainer.innerHTML = '';
+function renderWeeklyAverage() {
+    const el = document.getElementById('weekly-average-score');
+    if (!el) return;
 
-    const counts = Object.entries(state.missionCounts);
+    const now = new Date();
+    let totalScore = 0;
+    let daysCount = 0;
 
-    // 미션 데이터 가져오기 (점수 확인용)
-    const allMissions = state.missions;
-    const getPts = (label) => allMissions.find(m => m.label === label)?.pts || 0;
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-    const goodMissions = counts
-        .filter(([label]) => getPts(label) > 0)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3);
-
-    const badMissions = counts
-        .filter(([label]) => getPts(label) < 0)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3);
-
-    const renderItems = (list, container, colorClass, barColor, hoverColor) => {
-        if (list.length === 0) {
-            container.innerHTML = '<div class="flex-1 flex items-center justify-center"><p class="text-2xl font-black text-gray-200 text-center">아직 기록이 없어요</p></div>';
-            return;
+        if (state.activitiesByDate && state.activitiesByDate[key]) {
+            const score = state.activitiesByDate[key]
+                .filter(a => a.pts > 0)
+                .reduce((sum, a) => sum + a.pts, 0);
+            totalScore += score;
         }
+        daysCount++;
+    }
 
-        // Vertical ranking list
-        const grid = document.createElement('div');
-        grid.className = 'flex flex-col gap-3 h-full pb-2';
-
-        list.forEach(([label, count], idx) => {
-            const missionData = allMissions.find(m => m.label === label);
-            const icon = missionData ? missionData.icon : 'star';
-
-            const rankColors = [
-                'bg-amber-100 text-amber-600', // 1st
-                'bg-slate-100 text-slate-500', // 2nd
-                'bg-orange-100 text-orange-600' // 3rd
-            ];
-
-            const item = document.createElement('div');
-            item.className = 'flex-1 flex flex-col justify-center gap-4 p-6 rounded-[32px] bg-white/60 border-2 border-white/40 shadow-sm hover:translate-x-1 transition-all min-h-0 overflow-hidden';
-            item.innerHTML = `
-                <!-- 1st Line: Rank, Icon, Count -->
-                <div class="flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-full ${rankColors[idx] || 'bg-gray-100'} flex items-center justify-center shrink-0 font-black text-xl">
-                            ${idx + 1}
-                        </div>
-                        <div class="w-12 h-12 rounded-2xl ${colorClass} flex items-center justify-center shrink-0">
-                            <span class="material-symbols-rounded text-2xl">${icon}</span>
-                        </div>
-                    </div>
-                    <span class="text-xl font-black text-gray-400 shrink-0">${count}회</span>
-                </div>
-                
-                <!-- 2nd Line: Title -->
-                <div class="min-w-0">
-                    <p class="font-black text-gray-800 truncate text-2xl tracking-tight">${label}</p>
-                </div>
-            `;
-            grid.appendChild(item);
-        });
-        container.appendChild(grid);
-    };
-
-    renderItems(goodMissions, goodContainer, 'bg-emerald-100 text-emerald-600', 'bg-emerald-400');
-    renderItems(badMissions, badContainer, 'bg-rose-100 text-rose-600', 'bg-rose-400');
+    const avg = daysCount > 0 ? Math.round(totalScore / daysCount) : 0;
+    el.textContent = avg + 'P';
 }
 
-function renderGiftHistory() {
-    const list = document.getElementById('gift-history-preview');
-    if (!list) return;
-    list.innerHTML = '';
-
-    const history = [...state.purchaseHistory].reverse();
-    if (history.length === 0) {
-        list.innerHTML = `<div class="flex-1 flex items-center justify-center"><p class="font-black text-2xl text-gray-200">구매 내역 없음</p></div>`;
+function renderDailyLineChart() {
+    if (typeof Chart === 'undefined') {
+        console.warn("Chart.js not loaded");
         return;
     }
 
-    history.forEach(item => {
+    const ctx = document.getElementById('daily-line-chart');
+    if (!ctx) return;
+
+    // Destroy existing chart if it exists
+    if (dailyLineChartInstance) {
+        dailyLineChartInstance.destroy();
+    }
+
+    // Data Preparation (Last 7 Days)
+    const labels = [];
+    const dataPoints = [];
+    const now = new Date();
+
+    for (let i = 6; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+        const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const label = `${d.getMonth() + 1}/${d.getDate()}`;
+
+        let score = 0;
+        if (state.activitiesByDate && state.activitiesByDate[key]) {
+            score = state.activitiesByDate[key]
+                .filter(a => a.pts > 0)
+                .reduce((sum, a) => sum + a.pts, 0);
+        }
+
+        labels.push(label);
+        dataPoints.push(score);
+    }
+
+    dailyLineChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '일일 획득 포인트',
+                data: dataPoints,
+                borderColor: '#6366F1', // Indigo-500
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#fff',
+                pointBorderColor: '#6366F1',
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    padding: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function (context) {
+                            return `획득: ${context.parsed.y}P`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0, 0, 0, 0.05)', borderDash: [2, 4] },
+                    ticks: {
+                        precision: 0,
+                        color: '#94a3b8',
+                        font: { weight: 'bold' }
+                    }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { weight: 'bold' }
+                    }
+                }
+            }
+        }
+    });
+
+    // If all data points are 0, add a visual hint
+    if (dataPoints.every(p => p === 0)) {
+        console.log("Adding 'No Data' hint to Line Chart");
+        // This is handled by Chart.js defaults, but we could add a plugin if needed.
+    }
+}
+
+function renderMissionPieChart() {
+    if (typeof Chart === 'undefined') {
+        console.warn("Chart.js not loaded");
+        return;
+    }
+
+    const ctx = document.getElementById('mission-pie-chart');
+    if (!ctx) return;
+
+    if (missionPieChartInstance) {
+        missionPieChartInstance.destroy();
+    }
+
+    // Aggressive Fallback for Mission Stats
+    let countsArray = Object.entries(state.missionCounts);
+
+    if (countsArray.length === 0) {
+        const savedStats = JSON.parse(localStorage.getItem('missionStats'));
+        if (savedStats) {
+            countsArray = Object.entries(savedStats);
+        }
+    }
+
+    // Default data for visual density if still empty
+    if (countsArray.length === 0) {
+        countsArray = [["기록 대기 중", 1]];
+    }
+
+    const labels = countsArray.map(c => c[0]);
+    const data = countsArray.map(c => c[1]);
+    const isDefault = labels[0] === "기록 대기 중";
+
+    missionPieChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: isDefault ? ['#e2e8f0'] : [
+                    '#4f46e5', // Indigo
+                    '#10b981', // Emerald
+                    '#f59e0b', // Amber
+                    '#ef4444', // Rose
+                    '#8b5cf6'  // Purple
+                ],
+                borderWidth: 0,
+                hoverOffset: 15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        boxWidth: 10,
+                        padding: 15,
+                        font: { size: 12, weight: 'bold' },
+                        color: '#475569'
+                    }
+                }
+            },
+            cutout: '75%'
+        }
+    });
+}
+
+function renderTopMissions() {
+    const container = document.getElementById('top-missions-good');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    // 1. Try Internal State
+    let counts = Object.entries(state.missionCounts);
+
+    // 2. Fallback: Check 'missionStats' (Direct Key)
+    if (counts.length === 0) {
+        const savedStats = JSON.parse(localStorage.getItem('missionStats'));
+        if (savedStats) {
+            counts = Object.entries(savedStats);
+        }
+    }
+
+    // Sort Descending
+    const sortedMissions = counts
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10); // Top 10
+
+    if (sortedMissions.length === 0) {
+        container.innerHTML = '<p class="text-white/80 font-bold text-center py-4">아직 기록이 없어요!</p>';
+        return;
+    }
+
+    sortedMissions.forEach(([label, count], idx) => {
+        const item = document.createElement('div');
+        item.className = 'top-mission-item';
+
+        // Icon lookup
+        const missionData = state.missions.find(m => m.label === label);
+        const icon = missionData ? missionData.icon : 'star';
+
+        item.innerHTML = `
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-[#F0F2F5] flex items-center justify-center">
+                    <span class="material-symbols-rounded text-gray-700 text-2xl">${icon}</span>
+                </div>
+                <span class="text-xl font-bold text-gray-800">${label}</span>
+            </div>
+            <div class="text-2xl font-black text-gray-900">${count}<span class="text-sm text-gray-400 ml-1 font-bold">회</span></div>
+        `;
+        container.appendChild(item);
+    });
+}
+
+function renderGiftHistory() {
+    const list = document.getElementById('gift-purchase-history');
+    if (!list) return;
+    list.innerHTML = '';
+
+    // 1. Try State Data
+    let history = [...state.purchaseHistory];
+
+    // 2. Fallback: Check '칭찬항아리_구매내역'
+    if (history.length === 0) {
+        const saved = JSON.parse(localStorage.getItem('칭찬항아리_구매내역')) || [];
+        if (saved.length > 0) {
+            history = saved.map(item => ({
+                date: item.date || new Date().toISOString(),
+                name: item.name,
+                cost: item.points || 0
+            }));
+        }
+    }
+
+    // No other fallback for 'gift history' requested, but could add generic key if needed.
+
+    const reversedHistory = [...history].reverse();
+
+    if (reversedHistory.length === 0) {
+        list.className = 'space-y-3 flex-1 overflow-y-auto pr-2 custom-scrollbar flex items-center justify-center';
+        list.innerHTML = `<p class="text-gray-300 font-bold text-center">아직 받은 선물이 없어요!</p>`;
+        return;
+    }
+
+    list.className = 'space-y-3 flex-1 overflow-y-auto pr-2 custom-scrollbar';
+
+    reversedHistory.forEach(item => {
         const h = document.createElement('div');
-        h.className = 'flex items-center gap-4 p-4 rounded-2xl bg-white border-2 border-gray-50 shadow-sm hover:scale-[1.02] transition-all';
+        h.className = 'history-item';
+
         const d = new Date(item.date);
-        const dateStr = `${d.getMonth() + 1}월 ${d.getDate()}일`;
+        let dateStr = item.date;
+        if (!isNaN(d.getTime())) {
+            dateStr = `${d.getMonth() + 1}.${d.getDate()}`;
+        }
 
         h.innerHTML = `
-            <div class="text-3xl shrink-0">🎁</div>
-            <div class="flex-1 flex items-center justify-between min-w-0 gap-4">
-                <p class="text-xl font-black text-gray-800 truncate">${item.name}</p>
-                <div class="flex items-center gap-3 shrink-0">
-                    <p class="text-sm font-bold text-gray-400">${dateStr}</p>
-                    <p class="text-xl font-black text-blue-600">-${item.cost.toLocaleString()}P</p>
-                </div>
+            <div class="flex items-center gap-4">
+                <span class="text-sm font-bold text-gray-400 w-10">${dateStr}</span>
+                <span class="font-bold text-gray-800">${item.name}</span>
             </div>
+            <span class="font-black text-rose-500">-${(item.cost || 0).toLocaleString()}P</span>
         `;
         list.appendChild(h);
     });

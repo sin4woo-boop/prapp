@@ -39,6 +39,8 @@
         }
     </script>
     <link rel="stylesheet" href="index.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -323,116 +325,67 @@
     </div>
 
     <!-- DASHBOARD SCREEN -->
-    <div id="dashboard-screen"
-        class="hidden fixed inset-0 bg-[#f9fafb] z-[150] flex flex-col p-8 gap-8 overflow-hidden">
-        <div class="dashboard-header shrink-0">
-            <div class="flex items-center gap-4">
-                <span class="material-symbols-rounded text-5xl text-indigo-500">space_dashboard</span>
-                <h1 class="text-5xl font-black text-gray-900 tracking-tight">대시보드</h1>
+    <!-- DASHBOARD SCREEN (Layered Minimal Style) -->
+    <div id="dashboard-screen" class="hidden fixed inset-0 bg-[#F0F2F5] z-[150] flex flex-col p-6 overflow-y-auto">
+        <div class="flex items-center justify-between mb-10 px-4">
+            <div>
+                <h1 class="text-5xl font-black text-gray-900 tracking-tight">명예의 전당</h1>
+                <p class="text-gray-400 font-bold mt-2">이준·이찬이가 이뤄낸 멋진 기록들</p>
             </div>
             <button onclick="closeDashboard()"
-                class="px-8 py-4 bg-white border-2 border-gray-100 rounded-3xl font-black text-xl text-gray-500 shadow-sm active:scale-95 transition-all flex items-center gap-2">
-                <span class="material-symbols-rounded">arrow_back</span>
-                홈으로 돌아가기
+                class="bg-white px-8 py-4 rounded-3xl shadow-lg font-black text-gray-600 hover:bg-gray-50 active:scale-95 transition-all">
+                홈으로 이동
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto no-scrollbar pr-1">
-            <div class="dashboard-grid-container grid grid-cols-12 gap-5 min-h-full">
+        <div class="max-w-6xl mx-auto w-full space-y-8">
 
-                <!-- 1. 최고의 조력자 (Amber) [Row 1-2, Col 1-3] -->
-                <div class="card bento-card bento-amber p-7 overflow-hidden">
-                    <div>
-                        <span class="material-symbols-rounded text-4xl text-amber-500 mb-2">military_tech</span>
-                        <h3 class="text-xl font-black text-gray-800">최고의 조력자</h3>
-                        <p class="text-sm font-bold text-gray-400">명예의 전당 점수</p>
+            <!-- 1. 메인 스코어 카드 -->
+            <div
+                class="bg-gradient-to-br from-indigo-500 to-purple-700 rounded-[50px] p-10 text-white shadow-2xl relative overflow-hidden">
+                <div class="flex justify-around items-center">
+                    <div class="text-center">
+                        <p class="text-indigo-100 font-bold text-lg mb-2">일일 최고 기록</p>
+                        <h2 id="best-day-score" class="text-7xl font-black italic">0P</h2>
                     </div>
-                    <div class="mt-4">
-                        <span class="text-6xl font-black text-amber-600 block" id="best-day-score">0P</span>
-                        <p class="text-sm font-bold text-amber-800/40" id="best-day-date">-</p>
+                    <div class="w-px h-24 bg-white/20"></div>
+                    <div class="text-center">
+                        <p class="text-indigo-100 font-bold text-lg mb-2">누적 전체 포인트</p>
+                        <h2 id="cumulative-score" class="text-7xl font-black italic">0P</h2>
+                    </div>
+                </div>
+                <div class="absolute -bottom-10 -right-10 opacity-10 text-[200px] font-black italic">WINNER</div>
+            </div>
+
+            <!-- 2. 중간 랭킹 & 내역 카드 -->
+            <div class="grid grid-cols-2 gap-8">
+                <div class="bg-white rounded-[40px] p-8 shadow-xl border border-white">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-emerald-500">trending_up</span> 자주 하는 칭찬 행동
+                    </h3>
+                    <div id="top-missions-good" class="space-y-4">
                     </div>
                 </div>
 
-                <!-- 2. 누적 포인트 (Cyan) [Row 1-2, Col 4-6] -->
-                <div class="card bento-card bento-cyan p-7 overflow-hidden">
-                    <div>
-                        <span class="material-symbols-rounded text-4xl text-cyan-500 mb-2">stars</span>
-                        <h3 class="text-xl font-black text-gray-800">누적 칭찬 포인트</h3>
-                        <p class="text-sm font-bold text-gray-400">지금까지 받은 모든 점수</p>
-                    </div>
-                    <div class="mt-4">
-                        <span class="text-6xl font-black text-cyan-600 block" id="cumulative-score">0P</span>
-                        <p class="text-sm font-bold text-cyan-800/40">꾸준히 성장하고 있어요!</p>
+                <div class="bg-white rounded-[40px] p-8 shadow-xl border border-white">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-rose-500">redeem</span> 선물 구매 상세 내역
+                    </h3>
+                    <div id="gift-purchase-history"
+                        class="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
                     </div>
                 </div>
+            </div>
 
-                <!-- 3. 월별 그래프 (Indigo) [Row 1-6, Col 7-12] -->
-                <div class="card bento-card bento-indigo p-8">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center">
-                                <span class="material-symbols-rounded text-2xl text-indigo-600">query_stats</span>
-                            </div>
-                            <h3 class="text-xl font-black text-gray-800">월별 성장 추이</h3>
-                        </div>
-                    </div>
-                    <div id="monthly-chart" class="flex-1 flex items-end justify-around gap-2 px-1 min-h-0"></div>
+            <!-- 3. 하단 그래프 카드 -->
+            <div class="bg-white rounded-[40px] p-10 shadow-xl border border-white">
+                <h3 class="text-2xl font-bold text-gray-800 mb-8">우리 아이 성장 곡선 📉</h3>
+                <div
+                    class="h-64 flex items-center justify-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-100">
+                    <canvas id="daily-line-chart"></canvas>
                 </div>
-
-                <!-- 4. 폭풍 칭찬 행동 (Emerald) [Row 3-10, Col 1-3] -->
-                <div class="card bento-card bento-emerald p-6 flex flex-col min-h-0">
-                    <div class="flex flex-col gap-2 mb-6">
-                        <span class="material-symbols-rounded text-3xl text-emerald-500">thumb_up</span>
-                        <h3 class="text-lg font-black text-gray-800 leading-tight">폭풍 칭찬 행동</h3>
-                    </div>
-                    <div id="top-missions-good" class="flex-1 flex flex-col gap-3 overflow-y-auto no-scrollbar">
-                    </div>
-                </div>
-
-                <!-- 5. 주의가 필요해요 (Rose) [Row 3-10, Col 4-6] -->
-                <div class="card bento-card bento-rose-bad p-6 flex flex-col min-h-0">
-                    <div class="flex flex-col gap-2 mb-6">
-                        <span class="material-symbols-rounded text-3xl text-rose-500">warning</span>
-                        <h3 class="text-lg font-black text-gray-800 leading-tight">주의가 필요해요</h3>
-                    </div>
-                    <div id="top-missions-bad" class="flex-1 flex flex-col gap-3 overflow-y-auto no-scrollbar">
-                    </div>
-                </div>
-
-                <!-- 6. 선물 구매 내역 (Blue) [Row 7-10, Col 7-9] -->
-                <div class="card bento-card bento-blue p-7 flex flex-col min-h-0">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-3xl text-blue-500">card_giftcard</span>
-                            <h3 class="text-xl font-black text-gray-800">선물 구매 내역</h3>
-                        </div>
-                        <button onclick="openFullHistory('gift')"
-                            class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl font-black text-sm hover:bg-blue-100 transition-colors">
-                            전체 보기
-                        </button>
-                    </div>
-                    <div id="gift-history-preview" class="flex-1 overflow-y-auto no-scrollbar space-y-3"></div>
-                </div>
-
-                <!-- 7. 목표 달성 기록 (Purple) [Row 7-10, Col 10-12] -->
-                <div class="card bento-card bento-purple p-7 flex flex-col min-h-0">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-3xl text-purple-500">auto_awesome</span>
-                            <h3 class="text-xl font-black text-gray-800">목표 달성 기록</h3>
-                        </div>
-                        <button onclick="openFullHistory('goal')"
-                            class="px-4 py-2 bg-purple-50 text-purple-600 rounded-xl font-black text-sm hover:bg-purple-100 transition-colors">
-                            전체 보기
-                        </button>
-                    </div>
-                    <div id="goal-history-preview" class="flex-1 overflow-y-auto no-scrollbar space-y-3"></div>
-                </div>
-
             </div>
         </div>
-    </div>
-    </div>
     </div>
 
     <!-- GIFT SHOP MODAL (ID Restored for JS) -->
