@@ -13,6 +13,13 @@ body {
         radial-gradient(at 15% 85%, rgba(235, 225, 255, 0.8) 0%, transparent 60%),
         linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
     background-attachment: fixed;
+    height: 100%;
+    /* 세로모드 방지 및 터치 최적화 */
+    touch-action: manipulation;
+}
+
+#app {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* 애니메이션 */
@@ -150,6 +157,33 @@ body {
 .premium-blue {
     background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%) !important;
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
+}
+
+/* 태블릿/작은 화면 대응: 패딩 및 텍스트 자동 조절 */
+@media (max-height: 800px) {
+    .card {
+        padding: 1.25rem !important;
+    }
+
+    .mission-card {
+        padding: 0.75rem !important;
+    }
+
+    .mission-card span {
+        font-size: 2.5rem !important;
+    }
+
+    .mission-card p.text-\[15px\] {
+        font-size: 13px !important;
+    }
+
+    .mission-card p.text-2xl {
+        font-size: 1.25rem !important;
+    }
+
+    .bento-card {
+        padding: 1.25rem !important;
+    }
 }
 
 .premium-indigo {
@@ -486,6 +520,8 @@ body {
     overflow: hidden;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     backdrop-filter: blur(10px);
+    min-height: 0;
+    /* 내부 박스 무너짐 방지 */
 }
 
 .bento-card:hover {
