@@ -481,16 +481,34 @@ body {
         font-size: 20px !important;
     }
 
-    /* 5. 점수 표시 칸(선물샵 등) 축소 */
-    #shop-score {
-        font-size: 2.5rem !important;
-        margin-bottom: 0 !important;
+
+    /* 1. 미션 그리드: 무조건 6개씩 3줄 고정 */
+    #mission-grid {
+        display: grid !important;
+        grid-template-columns: repeat(6, 1fr) !important;
+        grid-template-rows: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        height: auto !important;
+        margin-top: 5px !important;
+        overflow-y: auto !important;
+        align-content: start;
+        padding-top: 0 !important;
     }
 
-    /* 1. 이번 주 활동 (날짜 카드) 다이어트 */
+    /* 2. 오늘의 미션 상단 여백 줄이기 */
+    #home-screen {
+        padding-top: 10px !important;
+        gap: 12px !important;
+    }
+
+    #home-screen h3 {
+        margin-bottom: 8px !important;
+        /* 제목 아래 여백 축소 */
+    }
+
+    /* 3. 이번 주 활동 글자 세로 간격 줄이기 */
     #week-display .card {
-        padding: 0.5rem !important;
-        /* 내부 여백 대폭 축소 */
+        padding: 8px 4px !important;
         gap: 2px !important;
     }
 
@@ -498,83 +516,431 @@ body {
         font-size: 0.9rem !important;
     }
 
-    /* 요일 (월, 화...) */
     #week-display p.text-4xl {
         font-size: 1.2rem !important;
     }
 
-    /* 날짜 숫자 */
     #week-display p.text-2xl.font-black {
         font-size: 1rem !important;
     }
 
-    /* 포인트 점수 */
+    /* 4. 배지 크기 수정 및 텍스트 가독성 확보 */
+    #main-badge-display {
+        padding: 5px !important;
+        gap: 10px !important;
+    }
 
-    /* 2. 배지 영역 축소 (배지가 잘리지 않게) */
+    /* 대표 배지 카드 내부 레이아웃 */
+    #main-badge-display .card {
+        padding: 15px 10px !important;
+        margin: 0 !important;
+    }
+
+    /* 배지 아이콘 크기 줄이기 */
     .tier-badge.scale-125 {
         width: 70px !important;
-        /* 110px -> 70px */
         height: 70px !important;
-        /* 110px -> 70px */
-        border-radius: 16px !important;
-    }
-
-    .tier-badge.scale-125 .tier-icon {
-        font-size: 35px !important;
-        /* 아이콘 크기 축소 */
-    }
-
-    #main-badge-display p.text-3xl {
-        font-size: 1rem !important;
-        /* 배지 이름 글자 크기 축소 */
-        margin-top: 5px !important;
-    }
-
-    /* 3. 섹션 타이틀 (오늘의 미션, 이번 주 활동 등) 크기 조절 */
-    #home-screen h3 {
-        font-size: 1.2rem !important;
-        /* 3xl -> 1.2rem */
-        margin-bottom: 10px !important;
-        white-space: nowrap !important;
-    }
-
-    /* 사이드바 액션 버튼 텍스트 축소 */
-    .col-span-4.flex.flex-col.gap-6 button p {
-        font-size: 1.1rem !important;
-    }
-
-    .col-span-4.flex.flex-col.gap-6 button {
-        padding: 0.75rem !important;
-        gap: 0.5rem !important;
-    }
-
-    .col-span-4.flex.flex-col.gap-6 {
-        gap: 1rem !important;
-    }
-
-    /* 하단 벤트형 카드 패딩 축소 */
-    .bento-card {
-        padding: 1rem !important;
-    }
-
-    .bento-card h3 {
-        font-size: 1.25rem !important;
-        margin-bottom: 0.5rem !important;
-    }
-
-    /* 회전 가드 텍스트 축소 */
-    #landscape-guard span.material-symbols-rounded {
-        font-size: 60px !important;
+        border-radius: 18px !important;
         margin-bottom: 15px !important;
     }
 
-    #landscape-guard h1 {
-        font-size: clamp(1.5rem, 4vw, 2.5rem) !important;
+    .tier-badge.scale-125 .tier-icon {
+        font-size: 40px !important;
     }
 
-    #landscape-guard p {
-        font-size: clamp(0.9rem, 1.5vw, 1.1rem) !important;
+    /* 안 보였던 배지 이름 텍스트 강제 노출 */
+    #main-badge-display p.text-3xl {
+        font-size: 1.2rem !important;
+        display: block !important;
+        line-height: 1.2 !important;
+        color: #1f2937 !important;
+        margin-top: 0 !important;
     }
+
+    /* 5. 전체적인 섹션 높이 밸런스 조정 */
+    .flex-\[4\.1\] {
+        flex: 4 !important;
+    }
+
+    .flex-\[1\.6\] {
+        flex: 2 !important;
+    }
+
+    /* --- 6. 대시보드 및 글로벌 레이아웃 초압축 (User Request) --- */
+
+    /* 1. 전역 스크롤 금지 및 전체 화면 고정 */
+    html,
+    body,
+    #app {
+        overflow: hidden !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 1. 설정창 버그 해결: 전체 화면을 확실히 덮도록 수정 */
+    #settings-screen,
+    #dashboard-screen {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 1000 !important;
+        background: #f9fafb !important;
+        display: flex !important;
+        flex-direction: row !important;
+        /* 설정창 내부 레이아웃 유지 */
+        overflow-y: auto !important;
+        padding: 15px !important;
+    }
+
+    /* 대시보드가 숨겨져 있을 때는 보이지 않게 처리 (ID+Class로 명시도 확보) */
+    #dashboard-screen.hidden,
+    #settings-screen.hidden {
+        display: none !important;
+    }
+
+    /* 2. 이번 주 활동: 날짜 카드 세로 간격 압축 */
+    #week-display {
+        align-items: center !important;
+        /* 세로 중앙 정렬로 공간 낭비 방지 */
+        gap: 8px !important;
+    }
+
+    #week-display .card {
+        padding: 8px 4px !important;
+        /* 안쪽 여백 축소 */
+        height: auto !important;
+        /* 높이 자동 조절 */
+        min-height: 90px !important;
+        /* 최소 높이만 보장 */
+        flex: 1;
+        gap: 2px !important;
+    }
+
+    #week-display p {
+        margin-bottom: 2px !important;
+        line-height: 1.1 !important;
+    }
+
+    /* 3. 대시보드 디자인: 제목 옆에 숫자 배치 */
+    .bento-card {
+        padding: 15px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        /* 가로로 배치 */
+        align-items: center !important;
+        justify-content: space-between !important;
+        height: auto !important;
+    }
+
+    .bento-card div:first-child {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .bento-card h3 {
+        font-size: 1.1rem !important;
+        margin: 0 !important;
+        display: inline-block;
+    }
+
+    .bento-card .text-6xl {
+        font-size: 2.2rem !important;
+        /* 숫자 크기를 제목과 어울리게 조절 */
+        margin: 0 !important;
+        font-weight: 950;
+        display: inline-block !important;
+        vertical-align: middle;
+    }
+
+    /* 불필요한 설명글 숨기기 */
+    .bento-card p.text-sm {
+        display: none !important;
+    }
+
+    /* 4. 기타 미세 여백 압축 */
+    .bento-card {
+        border-top-width: 6px !important;
+        /* 헤더 라인 두께 조절 */
+    }
+
+    /* --- [USER REQUEST] 대시보드 레이아웃 상세 조정 (16:10 Optimized) --- */
+
+    /* 1. 전체 레이아웃: 16:10 비율 대응 */
+    #dashboard-screen:not(.hidden) {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        padding: 2vh 2vw !important;
+        /* 가로세로 비율에 맞춘 유동적 여백 */
+        background: #f8fafc !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        z-index: 1000 !important;
+    }
+
+    /* 2. 대시보드 헤더 영역 */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    /* 2. 정밀 12열 10행 그리드 시스템 */
+    .dashboard-grid-container {
+        display: grid !important;
+        grid-template-columns: repeat(12, 1fr) !important;
+        grid-template-rows: repeat(10, 1fr) !important;
+        /* 세로를 10칸으로 배분 */
+        gap: 12px !important;
+        flex: 1 !important;
+        min-height: 0;
+    }
+
+    /* [A] 숫자 요약: 제목 옆에 숫자 (가로로 긴 16:10 특성 활용) */
+    .bento-amber,
+    .bento-cyan {
+        grid-row: span 2 !important;
+        /* 상단 20% 공간 차지 */
+        grid-column: span 3 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding: 0 20px !important;
+        border-top-width: 5px !important;
+    }
+
+    .bento-amber .text-6xl,
+    .bento-cyan .text-6xl {
+        font-size: clamp(1.5rem, 3vw, 2.2rem) !important;
+        /* 화면 크기에 따른 유동적 크기 */
+        font-weight: 900 !important;
+        margin: 0 !important;
+    }
+
+    /* [B] 랭킹 리스트: 폭풍 칭찬 & 주의 필요 (세로 공간 최대 확보) */
+    .bento-emerald,
+    .bento-rose-bad {
+        grid-row: span 8 !important;
+        /* 나머지 80% 공간 전체 사용 */
+        grid-column: span 3 !important;
+    }
+
+    /* [C] 중앙 영역: 월별 성장 추이 (가로 6칸 확보) */
+    .bento-indigo {
+        grid-column: span 6 !important;
+        grid-row: span 6 !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* [D] 우측 리스트: 구매 내역 & 목표 달성 */
+    .bento-blue,
+    .bento-purple {
+        grid-column: span 3 !important;
+        grid-row: span 4 !important;
+        /* 성장 추이 아래/옆으로 배치 */
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* 3. 내부 요소 압축 및 가독성 */
+    .bento-card h3 {
+        font-size: 0.95rem !important;
+        white-space: nowrap;
+        /* 제목 줄바꿈 방지 */
+        font-weight: 700 !important;
+        color: #475569 !important;
+        display: inline-block;
+        margin: 0 !important;
+    }
+
+    .bento-card {
+        padding: 15px !important;
+    }
+
+    /* 리스트 항목 간격 16:10에 맞춰 압축 */
+    #top-missions-good,
+    #top-missions-bad,
+    #gift-history-preview,
+    #goal-history-preview {
+        gap: 4px !important;
+        margin-top: 8px !important;
+        flex: 1;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    #monthly-chart {
+        flex: 1 !important;
+        min-height: 0;
+    }
+
+    /* 설명 문구 제거 */
+    .bento-card p.text-sm {
+        display: none !important;
+    }
+}
+
+/* 4. 배지 크기 및 텍스트 가독성 */
+.tier-badge.scale-125 {
+    width: 80px !important;
+    height: 80px !important;
+    margin-bottom: 10px !important;
+    border-radius: 18px !important;
+}
+
+#main-badge-display p {
+    font-size: 1.1rem !important;
+    display: block !important;
+    color: #374151 !important;
+}
+
+/* 5. 메인 그리드 및 상단 여백 압축 */
+#home-screen {
+    padding: 10px 20px !important;
+    gap: 10px !important;
+}
+
+#mission-grid {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 8px !important;
+    flex: 1 !important;
+}
+
+/* 4. 대시보드 하단 차트 및 리스트 영역 높이 조절 */
+#monthly-chart {
+    height: 120px !important;
+    /* 차트 높이 고정 */
+}
+
+#top-missions-good,
+#top-missions-bad {
+    gap: 5px !important;
+}
+
+.bento-card .flex.flex-col.gap-3 {
+    gap: 4px !important;
+}
+
+/* 1. 미션 카드: 2줄 구조로 변경하되 높이는 최소화 */
+.mission-card {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 5px !important;
+    min-height: 0 !important;
+    /* 높이 제한 해제하여 그리드에 맞춤 */
+    height: auto !important;
+    aspect-ratio: auto !important;
+    gap: 0 !important;
+}
+
+.mission-card span.material-symbols-rounded {
+    font-size: 2rem !important;
+    /* 아이콘 크기 살짝 축소 */
+}
+
+/* 6. 헤더 및 이번 주 활동 영역 높이 압축 */
+#home-screen {
+    padding: 10px 15px !important;
+    gap: 12px !important;
+}
+
+.header-grid {
+    height: auto !important;
+    margin-bottom: 5px !important;
+}
+
+/* 2. 아이콘과 미션명을 한 줄로 (공간 절약) */
+.mission-card>div:first-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    margin-bottom: 2px !important;
+    width: 100%;
+}
+
+/* 아이콘 크기 */
+.mission-card span.material-symbols-rounded {
+    font-size: 1.1rem !important;
+    margin-bottom: 0 !important;
+}
+
+/* 미션 이름 */
+.mission-card p.font-black.text-\[15px\] {
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0 !important;
+    flex: 0 1 auto;
+}
+
+/* 3. 포인트(pts) 부활 */
+.mission-card p.text-2xl {
+    display: block !important;
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+    margin-top: 2px !important;
+}
+
+/* 3. 섹션 타이틀 (오늘의 미션, 이번 주 활동 등) 크기 조절 */
+#home-screen h3 {
+    font-size: 1.2rem !important;
+    /* 3xl -> 1.2rem */
+    margin-bottom: 10px !important;
+    white-space: nowrap !important;
+}
+
+/* 사이드바 액션 버튼 텍스트 축소 */
+.col-span-4.flex.flex-col.gap-6 button p {
+    font-size: 1.1rem !important;
+}
+
+.col-span-4.flex.flex-col.gap-6 button {
+    padding: 0.75rem !important;
+    gap: 0.5rem !important;
+}
+
+.col-span-4.flex.flex-col.gap-6 {
+    gap: 1rem !important;
+}
+
+/* 하단 벤트형 카드 패딩 축소 */
+.bento-card {
+    padding: 1rem !important;
+}
+
+.bento-card h3 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* 회전 가드 텍스트 축소 */
+#landscape-guard span.material-symbols-rounded {
+    font-size: 60px !important;
+    margin-bottom: 15px !important;
+}
+
+#landscape-guard h1 {
+    font-size: clamp(1.5rem, 4vw, 2.5rem) !important;
+}
+
+#landscape-guard p {
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem) !important;
+}
 }
 
 /* 초고해상도 대응 */
