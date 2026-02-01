@@ -171,14 +171,14 @@ function renderMissions() {
         const themeList = isPositive ? posThemes : negThemes;
         const selectedTheme = themeList[mission.id % themeList.length];
 
-        card.className = `mission-card card p-5 h-full flex flex-col items-center justify-center text-center premium-${selectedTheme}`;
+        card.className = `mission-card card flex flex-col items-center justify-center text-center premium-${selectedTheme}`;
         card.onclick = () => completeMission(mission);
 
         card.innerHTML = `
-            <div class="mb-2">
-                <span class="material-symbols-rounded text-5xl">${mission.icon}</span>
+            <div>
+                <span class="material-symbols-rounded">${mission.icon}</span>
             </div>
-            <p class="font-black text-[15px] mb-1 uppercase tracking-tight truncate w-full">${mission.label}</p>
+            <p class="font-black text-[15px]">${mission.label}</p>
             <p class="font-black text-2xl">
                 ${mission.pts > 0 ? '+' : ''}${mission.pts}P
             </p>
