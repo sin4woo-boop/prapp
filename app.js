@@ -795,6 +795,8 @@ function closeGiftShop() {
 }
 
 // ===== 커스텀 모달 (Alert/Confirm/Prompt 통합) =====
+let isCustomModalOpen = false;
+
 function showCustomModal(options) {
     const {
         title = '알림',
@@ -805,6 +807,9 @@ function showCustomModal(options) {
         inputType = 'text',
         selectOptions = [] // [{value: '', label: ''}, ...]
     } = options;
+
+    if (isCustomModalOpen) return Promise.resolve(null);
+    isCustomModalOpen = true;
 
     return new Promise((resolve) => {
         const modal = document.getElementById('universal-modal');
@@ -832,7 +837,7 @@ function showCustomModal(options) {
             input.value = '';
             input.type = inputType;
             input.placeholder = placeholder;
-            setTimeout(() => input.focus(), 100);
+            setTimeout(() => input.focus(), 150);
         } else if (type === 'select') {
             selectContainer.classList.remove('hidden');
             select.innerHTML = '';
@@ -842,7 +847,7 @@ function showCustomModal(options) {
                 o.textContent = opt.label;
                 select.appendChild(o);
             });
-            setTimeout(() => select.focus(), 100);
+            setTimeout(() => select.focus(), 150);
         }
 
         if (type === 'alert') {
@@ -853,16 +858,7 @@ function showCustomModal(options) {
 
         modal.classList.remove('hidden');
 
-        const cleanup = (value) => {
-            modal.classList.add('hidden');
-            btnConfirm.onclick = null;
-            btnCancel.onclick = null;
-            input.onkeypress = null;
-            select.onkeypress = null;
-            resolve(value);
-        };
-
-        btnConfirm.onclick = () => {
+        const handleConfirm = () => {
             let val;
             if (type === 'prompt') val = input.value;
             else if (type === 'select') val = select.value;
@@ -870,14 +866,30 @@ function showCustomModal(options) {
             cleanup(val);
         };
 
-        btnCancel.onclick = () => cleanup(null);
+        const handleCancel = () => cleanup(null);
 
-        input.onkeypress = (e) => {
-            if (e.key === 'Enter') btnConfirm.click();
+        const handleKey = (e) => {
+            if (e.key === 'Enter') handleConfirm();
+            if (e.key === 'Escape') handleCancel();
         };
-        select.onkeypress = (e) => {
-            if (e.key === 'Enter') btnConfirm.click();
+
+        const cleanup = (value) => {
+            modal.classList.add('hidden');
+            btnConfirm.removeEventListener('click', handleConfirm);
+            btnCancel.removeEventListener('click', handleCancel);
+            input.removeEventListener('keypress', handleKey);
+            select.removeEventListener('keypress', handleKey);
+            window.removeEventListener('keydown', handleKey);
+
+            isCustomModalOpen = false;
+            resolve(value);
         };
+
+        btnConfirm.addEventListener('click', handleConfirm);
+        btnCancel.addEventListener('click', handleCancel);
+        input.addEventListener('keypress', handleKey);
+        select.addEventListener('keypress', handleKey);
+        window.addEventListener('keydown', handleKey);
     });
 }
 

@@ -13,13 +13,20 @@ body {
         radial-gradient(at 15% 85%, rgba(235, 225, 255, 0.8) 0%, transparent 60%),
         linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
     background-attachment: fixed;
-    height: 100%;
+    height: 100vh;
+    width: 100vw;
     /* 세로모드 방지 및 터치 최적화 */
     touch-action: manipulation;
 }
 
 #app {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    /* 반응형을 위한 글로벌 폰트 사이즈 변수 */
+    --h1-size: clamp(2rem, 6vh, 4.5rem);
+    --h2-size: clamp(1.5rem, 4vh, 3rem);
+    --h3-size: clamp(1.2rem, 3vh, 2rem);
+    --p-size: clamp(0.9rem, 1.5vh, 1.2rem);
+    --mission-grid-gap: clamp(0.5rem, 1vw, 1rem);
 }
 
 /* 애니메이션 */
@@ -151,6 +158,28 @@ body {
     border: none !important;
     transition: all 0.2s;
     overflow: hidden;
+    padding: clamp(0.5rem, 1.5vh, 1.25rem) !important;
+    min-height: 0;
+    aspect-ratio: 1/1.1;
+}
+
+.mission-card span {
+    font-size: clamp(2rem, 5vh, 4rem) !important;
+}
+
+.mission-card p.font-black.text-\[15px\] {
+    font-size: clamp(0.7rem, 1.8vh, 1.1rem) !important;
+    line-height: 1.2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+.mission-card p.text-2xl {
+    font-size: clamp(1rem, 2.5vh, 2rem) !important;
 }
 
 /* 프리미엄 컬러 테마 (부드러운 버전) */
@@ -159,30 +188,62 @@ body {
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
 }
 
-/* 태블릿/작은 화면 대응: 패딩 및 텍스트 자동 조절 */
-@media (max-height: 800px) {
-    .card {
-        padding: 1.25rem !important;
+/* 태블릿 반응형 (Landscape) */
+@media (max-width: 1366px) {
+    #mission-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    #mission-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 
-    .mission-card {
-        padding: 0.75rem !important;
+    .col-span-8 {
+        grid-column: span 12 / span 12;
     }
 
-    .mission-card span {
-        font-size: 2.5rem !important;
+    .col-span-4 {
+        grid-column: span 12 / span 12;
     }
 
-    .mission-card p.text-\[15px\] {
-        font-size: 13px !important;
+    #home-screen {
+        overflow-y: auto !important;
+        padding-bottom: 2rem !important;
     }
 
-    .mission-card p.text-2xl {
-        font-size: 1.25rem !important;
+    .grid-cols-12 {
+        display: flex;
+        flex-direction: column;
+        height: auto !important;
     }
 
-    .bento-card {
-        padding: 1.25rem !important;
+    .flex-1.grid.grid-cols-12 {
+        display: flex;
+        flex-direction: column;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .h-full.min-h-0 {
+        height: auto !important;
+        min-height: auto !important;
+    }
+}
+
+/* Portrait 모드 대응 */
+@media (max-aspect-ratio: 1/1) {
+    #mission-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 가로 핏 최적화: 가로가 너무 길어지는 현상 방지 */
+@media (min-width: 1400px) {
+    #app {
+        max-width: 1600px;
+        margin: 0 auto;
     }
 }
 
@@ -260,7 +321,6 @@ body {
 }
 
 /* 공통 모달 스타일 - 강제 불투명 (솔리드 화이트) */
-#universal-modal-content,
 #gift-shop-modal .card,
 #day-detail-modal .card,
 #mission-settings-modal .card,
@@ -273,7 +333,6 @@ body {
     border-radius: 32px;
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4) !important;
     border: 3px solid #f3f4f6 !important;
-    z-index: 100;
 }
 
 /* 닫기 버튼(X) 가시성 극대화 */

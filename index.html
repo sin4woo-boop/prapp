@@ -48,7 +48,7 @@
         <!-- HOME SCREEN -->
         <div id="home-screen" class="flex-1 flex flex-col p-6 pb-10 gap-6">
             <!-- Header (Restored Grid) -->
-            <div class="grid grid-cols-12 gap-6 items-stretch h-[15vh] min-h-[100px] max-h-[140px] shrink-0">
+            <div class="grid grid-cols-12 gap-6 items-stretch h-[min(15vh,130px)] min-h-[90px] shrink-0">
                 <!-- Header Left: Profile & Points (col-span-8) -->
                 <div class="col-span-8 flex items-stretch gap-6">
                     <!-- 프로필 -->
@@ -61,7 +61,7 @@
                     <div
                         class="flex-[1.4] card glass-card px-10 flex items-center justify-between border-2 border-primary/20 bg-white/40">
                         <p class="text-2xl font-black text-gray-400 whitespace-nowrap">칭찬 포인트</p>
-                        <h1 class="text-7xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+                        <h1 class="text-[clamp(1.5rem,6vh,4.5rem)] font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
                             id="total-score">1250</h1>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                         <h3 class="text-3xl font-black text-blue-900 mb-6 flex items-center gap-2">오늘의 미션 <span
                                 class="text-4xl">🎯</span></h3>
                         <div id="mission-grid"
-                            class="flex-1 grid grid-cols-6 gap-4 overflow-y-auto no-scrollbar pr-2 content-start">
+                            class="flex-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6 overflow-y-auto no-scrollbar pr-2 content-start">
                         </div>
                     </div>
 
@@ -126,7 +126,7 @@
                     <!-- 목표 미션 (High Contrast Rose) -->
                     <div
                         class="flex-[3.6] card glass-card p-8 shrink-0 flex flex-col min-h-0 overflow-hidden bg-gradient-to-br from-rose-100/70 via-white/50 to-pink-100/60 border-2 border-rose-200/80 shadow-rose-glow">
-                        <h3 class="text-3xl font-black text-rose-900 mb-6 flex items-center gap-2">목표 미션 <span
+                        <h3 class="text-3xl font-black text-rose-900 mb-[1vh] flex items-center gap-2">목표 미션 <span
                                 class="text-4xl">🎯</span></h3>
                         <div id="goal-display" class="flex-1 flex flex-col justify-start space-y-4 min-h-0">
                         </div>
@@ -337,103 +337,107 @@
             </button>
         </div>
 
-        <div class="flex-1 grid grid-cols-12 gap-5 min-h-0" style="grid-template-rows: repeat(10, minmax(60px, 1fr));">
-            <!-- [LEFT COLUMN] (Rows 1-10) -->
-            <div class="col-span-8 row-span-10 grid grid-cols-8 gap-5"
-                style="grid-template-rows: repeat(10, minmax(60px, 1fr));">
-                <!-- 최고의 기록 (R1-3, C1-4) -->
-                <div
-                    class="col-start-1 col-span-4 row-start-1 row-span-3 card bento-card bento-amber p-7 flex flex-col justify-between overflow-hidden">
-                    <div>
-                        <span class="material-symbols-rounded text-4xl text-amber-500 mb-2">military_tech</span>
-                        <h3 class="text-xl font-black text-gray-800">최고의 조력자</h3>
-                        <p class="text-sm font-bold text-gray-400">명예의 전당 점수</p>
+        <div class="flex-1 overflow-y-auto no-scrollbar pr-1">
+            <div class="grid grid-cols-12 gap-5 min-h-full" style="grid-template-rows: repeat(10, minmax(40px, 1fr));">
+                <!-- [LEFT COLUMN] (Rows 1-10) -->
+                <div class="col-span-8 row-span-10 grid grid-cols-8 gap-5"
+                    style="grid-template-rows: repeat(10, minmax(40px, 1fr));">
+                    <!-- 최고의 기록 (R1-3, C1-4) -->
+                    <div
+                        class="col-start-1 col-span-4 row-start-1 row-span-3 card bento-card bento-amber p-7 flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <span class="material-symbols-rounded text-4xl text-amber-500 mb-2">military_tech</span>
+                            <h3 class="text-xl font-black text-gray-800">최고의 조력자</h3>
+                            <p class="text-sm font-bold text-gray-400">명예의 전당 점수</p>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-6xl font-black text-amber-600 block" id="best-day-score">0P</span>
+                            <p class="text-sm font-bold text-amber-800/40" id="best-day-date">-</p>
+                        </div>
                     </div>
-                    <div class="mt-4">
-                        <span class="text-6xl font-black text-amber-600 block" id="best-day-score">0P</span>
-                        <p class="text-sm font-bold text-amber-800/40" id="best-day-date">-</p>
-                    </div>
-                </div>
 
-                <!-- 누적 포인트 (R1-3, C5-8) -->
-                <div
-                    class="col-start-5 col-span-4 row-start-1 row-span-3 card bento-card bento-cyan p-7 flex flex-col justify-between overflow-hidden">
-                    <div>
-                        <span class="material-symbols-rounded text-4xl text-cyan-500 mb-2">stars</span>
-                        <h3 class="text-xl font-black text-gray-800">누적 칭찬 포인트</h3>
-                        <p class="text-sm font-bold text-gray-400">지금까지 받은 모든 점수</p>
+                    <!-- 누적 포인트 (R1-3, C5-8) -->
+                    <div
+                        class="col-start-5 col-span-4 row-start-1 row-span-3 card bento-card bento-cyan p-7 flex flex-col justify-between overflow-hidden">
+                        <div>
+                            <span class="material-symbols-rounded text-4xl text-cyan-500 mb-2">stars</span>
+                            <h3 class="text-xl font-black text-gray-800">누적 칭찬 포인트</h3>
+                            <p class="text-sm font-bold text-gray-400">지금까지 받은 모든 점수</p>
+                        </div>
+                        <div class="mt-4">
+                            <span class="text-6xl font-black text-cyan-600 block" id="cumulative-score">0P</span>
+                            <p class="text-sm font-bold text-cyan-800/40">꾸준히 성장하고 있어요!</p>
+                        </div>
                     </div>
-                    <div class="mt-4">
-                        <span class="text-6xl font-black text-cyan-600 block" id="cumulative-score">0P</span>
-                        <p class="text-sm font-bold text-cyan-800/40">꾸준히 성장하고 있어요!</p>
-                    </div>
-                </div>
 
-                <!-- [TALL] 폭풍 칭찬 행동 (R4-10, C1-2) -->
-                <div
-                    class="col-start-1 col-span-2 row-start-4 row-span-7 card bento-card bento-emerald p-6 flex flex-col min-h-0">
-                    <div class="flex flex-col gap-2 mb-6">
-                        <span class="material-symbols-rounded text-3xl text-emerald-500">thumb_up</span>
-                        <h3 class="text-lg font-black text-gray-800 leading-tight">폭풍 칭찬 행동</h3>
+                    <!-- [TALL] 폭풍 칭찬 행동 (R4-10, C1-2) -->
+                    <div
+                        class="col-start-1 col-span-2 row-start-4 row-span-7 card bento-card bento-emerald p-6 flex flex-col min-h-0">
+                        <div class="flex flex-col gap-2 mb-6">
+                            <span class="material-symbols-rounded text-3xl text-emerald-500">thumb_up</span>
+                            <h3 class="text-lg font-black text-gray-800 leading-tight">폭풍 칭찬 행동</h3>
+                        </div>
+                        <div id="top-missions-good" class="flex-1 flex flex-col gap-3 overflow-y-auto no-scrollbar">
+                        </div>
                     </div>
-                    <div id="top-missions-good" class="flex-1 flex flex-col gap-3 overflow-y-auto no-scrollbar"></div>
-                </div>
 
-                <!-- [TALL] 주의가 필요해요 (R4-10, C3-4) -->
-                <div
-                    class="col-start-3 col-span-2 row-start-4 row-span-7 card bento-card bento-rose-bad p-6 flex flex-col min-h-0">
-                    <div class="flex flex-col gap-2 mb-6">
-                        <span class="material-symbols-rounded text-3xl text-rose-500">warning</span>
-                        <h3 class="text-lg font-black text-gray-800 leading-tight">주의가 필요해요</h3>
+                    <!-- [TALL] 주의가 필요해요 (R4-10, C3-4) -->
+                    <div
+                        class="col-start-3 col-span-2 row-start-4 row-span-7 card bento-card bento-rose-bad p-6 flex flex-col min-h-0">
+                        <div class="flex flex-col gap-2 mb-6">
+                            <span class="material-symbols-rounded text-3xl text-rose-500">warning</span>
+                            <h3 class="text-lg font-black text-gray-800 leading-tight">주의가 필요해요</h3>
+                        </div>
+                        <div id="top-missions-bad" class="flex-1 flex flex-col gap-3 overflow-y-auto no-scrollbar">
+                        </div>
                     </div>
-                    <div id="top-missions-bad" class="flex-1 flex flex-col gap-3 overflow-y-auto no-scrollbar"></div>
-                </div>
 
-                <!-- [WIDE TALL] 월별 그래프 (R4-10, C5-8) -->
-                <div
-                    class="col-start-5 col-span-4 row-start-4 row-span-7 card bento-card bento-indigo p-8 flex flex-col">
-                    <div class="flex items-center justify-between mb-8">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center">
-                                <span class="material-symbols-rounded text-2xl text-indigo-600">query_stats</span>
+                    <!-- [WIDE TALL] 월별 그래프 (R4-10, C5-8) -->
+                    <div
+                        class="col-start-5 col-span-4 row-start-4 row-span-7 card bento-card bento-indigo p-8 flex flex-col">
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-2xl text-indigo-600">query_stats</span>
+                                </div>
+                                <h3 class="text-xl font-black text-gray-800">월별 성장 추이</h3>
                             </div>
-                            <h3 class="text-xl font-black text-gray-800">월별 성장 추이</h3>
                         </div>
+                        <div id="monthly-chart" class="flex-1 flex items-end justify-around gap-2 px-1 min-h-0"></div>
                     </div>
-                    <div id="monthly-chart" class="flex-1 flex items-end justify-around gap-2 px-1 min-h-0"></div>
-                </div>
-            </div>
-
-            <!-- [RIGHT COLUMN: HISTORY] (Rows 1-10) -->
-            <div class="col-span-4 row-span-10 flex flex-col gap-5">
-                <!-- 선물 구매 내역 -->
-                <div class="flex-1 card bento-card bento-blue p-7 flex flex-col min-h-0">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-3xl text-blue-500">card_giftcard</span>
-                            <h3 class="text-xl font-black text-gray-800">선물 구매 내역</h3>
-                        </div>
-                        <button onclick="openFullHistory('gift')"
-                            class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl font-black text-sm hover:bg-blue-100 transition-colors">
-                            전체 보기
-                        </button>
-                    </div>
-                    <div id="gift-history-preview" class="flex-1 overflow-y-auto no-scrollbar space-y-3"></div>
                 </div>
 
-                <!-- 목표 달성 기록 -->
-                <div class="flex-1 card bento-card bento-purple p-7 flex flex-col min-h-0">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-3xl text-purple-500">auto_awesome</span>
-                            <h3 class="text-xl font-black text-gray-800">목표 달성 기록</h3>
+                <!-- [RIGHT COLUMN: HISTORY] (Rows 1-10) -->
+                <div class="col-span-4 row-span-10 flex flex-col gap-5">
+                    <!-- 선물 구매 내역 -->
+                    <div class="flex-1 card bento-card bento-blue p-7 flex flex-col min-h-0">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-rounded text-3xl text-blue-500">card_giftcard</span>
+                                <h3 class="text-xl font-black text-gray-800">선물 구매 내역</h3>
+                            </div>
+                            <button onclick="openFullHistory('gift')"
+                                class="px-4 py-2 bg-blue-50 text-blue-600 rounded-xl font-black text-sm hover:bg-blue-100 transition-colors">
+                                전체 보기
+                            </button>
                         </div>
-                        <button onclick="openFullHistory('goal')"
-                            class="px-4 py-2 bg-purple-50 text-purple-600 rounded-xl font-black text-sm hover:bg-purple-100 transition-colors">
-                            전체 보기
-                        </button>
+                        <div id="gift-history-preview" class="flex-1 overflow-y-auto no-scrollbar space-y-3"></div>
                     </div>
-                    <div id="goal-history-preview" class="flex-1 overflow-y-auto no-scrollbar space-y-3"></div>
+
+                    <!-- 목표 달성 기록 -->
+                    <div class="flex-1 card bento-card bento-purple p-7 flex flex-col min-h-0">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-rounded text-3xl text-purple-500">auto_awesome</span>
+                                <h3 class="text-xl font-black text-gray-800">목표 달성 기록</h3>
+                            </div>
+                            <button onclick="openFullHistory('goal')"
+                                class="px-4 py-2 bg-purple-50 text-purple-600 rounded-xl font-black text-sm hover:bg-purple-100 transition-colors">
+                                전체 보기
+                            </button>
+                        </div>
+                        <div id="goal-history-preview" class="flex-1 overflow-y-auto no-scrollbar space-y-3"></div>
+                    </div>
                 </div>
             </div>
         </div>
