@@ -959,7 +959,10 @@ function renderDashboard() {
     renderCumulativePoints();
     renderWeeklyAverage();
     renderDailyLineChart();
-    renderMissionPieChart();
+    renderTotalGifts();
+    renderTotalPraise();
+    renderTotalCaution();
+    renderDaysInProgress();
     renderGiftHistory();
     renderTopMissions();
 }
@@ -1184,72 +1187,47 @@ function renderDailyLineChart() {
     }
 }
 
-function renderMissionPieChart() {
-    if (typeof Chart === 'undefined') {
-        console.warn("Chart.js not loaded");
+function renderTotalGifts() {
+    const el = document.getElementById('total-gifts-count');
+    if (el) el.innerText = `${state.purchaseHistory ? state.purchaseHistory.length : 0}건`;
+}
+
+function renderTotalPraise() {
+    const el = document.getElementById('total-praise-count');
+    if (!el) return;
+    const count = Object.entries(state.missionCounts)
+        .filter(([label]) => {
+            const m = state.missions.find(m => m.label === label);
+            return m && m.pts > 0;
+        })
+        .reduce((sum, [_, c]) => sum + c, 0);
+    el.innerText = `${count}회`;
+}
+
+function renderTotalCaution() {
+    const el = document.getElementById('total-caution-count');
+    if (!el) return;
+    const count = Object.entries(state.missionCounts)
+        .filter(([label]) => {
+            const m = state.missions.find(m => m.label === label);
+            return m && m.pts < 0;
+        })
+        .reduce((sum, [_, c]) => sum + c, 0);
+    el.innerText = `${count}회`;
+}
+
+function renderDaysInProgress() {
+    const el = document.getElementById('days-in-progress');
+    if (!el) return;
+    const dates = Object.keys(state.activitiesByDate).sort();
+    if (dates.length === 0) {
+        el.innerText = '0일';
         return;
     }
-
-    const ctx = document.getElementById('mission-pie-chart');
-    if (!ctx) return;
-
-    if (missionPieChartInstance) {
-        missionPieChartInstance.destroy();
-    }
-
-    // Aggressive Fallback for Mission Stats
-    let countsArray = Object.entries(state.missionCounts);
-
-    if (countsArray.length === 0) {
-        const savedStats = JSON.parse(localStorage.getItem('missionStats'));
-        if (savedStats) {
-            countsArray = Object.entries(savedStats);
-        }
-    }
-
-    // Default data for visual density if still empty
-    if (countsArray.length === 0) {
-        countsArray = [["기록 대기 중", 1]];
-    }
-
-    const labels = countsArray.map(c => c[0]);
-    const data = countsArray.map(c => c[1]);
-    const isDefault = labels[0] === "기록 대기 중";
-
-    missionPieChartInstance = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: isDefault ? ['#e2e8f0'] : [
-                    '#4f46e5', // Indigo
-                    '#10b981', // Emerald
-                    '#f59e0b', // Amber
-                    '#ef4444', // Rose
-                    '#8b5cf6'  // Purple
-                ],
-                borderWidth: 0,
-                hoverOffset: 15
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        boxWidth: 10,
-                        padding: 15,
-                        font: { size: 12, weight: 'bold' },
-                        color: '#475569'
-                    }
-                }
-            },
-            cutout: '75%'
-        }
-    });
+    const start = new Date(dates[0]);
+    const today = new Date();
+    const diff = Math.ceil((today - start) / (1000 * 60 * 60 * 24)) || 1;
+    el.innerText = `${diff}일`;
 }
 
 function renderTopMissions() {

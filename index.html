@@ -325,64 +325,69 @@
     </div>
 
     <!-- DASHBOARD SCREEN -->
-    <!-- DASHBOARD SCREEN (Layered Minimal Style) -->
-    <div id="dashboard-screen" class="hidden fixed inset-0 bg-[#F0F2F5] z-[150] flex flex-col p-6 overflow-y-auto">
-        <div class="flex items-center justify-between mb-10 px-4">
-            <div>
-                <h1 class="text-5xl font-black text-gray-900 tracking-tight">명예의 전당</h1>
-                <p class="text-gray-400 font-bold mt-2">이준·이찬이가 이뤄낸 멋진 기록들</p>
-            </div>
-            <button onclick="closeDashboard()"
-                class="bg-white px-8 py-4 rounded-3xl shadow-lg font-black text-gray-600 hover:bg-gray-50 active:scale-95 transition-all">
-                홈으로 이동
-            </button>
-        </div>
-
-        <div class="max-w-6xl mx-auto w-full space-y-8">
-
-            <!-- 1. 메인 스코어 카드 -->
-            <div
-                class="bg-gradient-to-br from-indigo-500 to-purple-700 rounded-[50px] p-10 text-white shadow-2xl relative overflow-hidden">
-                <div class="flex justify-around items-center">
-                    <div class="text-center">
-                        <p class="text-indigo-100 font-bold text-lg mb-2">일일 최고 기록</p>
-                        <h2 id="best-day-score" class="text-7xl font-black italic">0P</h2>
+    <div id="dashboard-screen" class="hidden fixed inset-0 bg-[#F8FAFC] z-[150] flex flex-col p-6 overflow-hidden">
+        <div class="flex flex-1 gap-6 overflow-hidden">
+            <div class="flex-[1.8] flex flex-col gap-6 overflow-hidden">
+                <!-- Top Stats Grid (3x2 Colorful Cards) -->
+                <div class="h-[35%] grid grid-cols-3 gap-4">
+                    <div class="bg-blue-50 p-5 rounded-[32px] border-2 border-blue-100 flex flex-col justify-center">
+                        <p class="text-blue-400 font-black text-sm mb-1">일일 최고 기록 🏆</p>
+                        <h3 id="best-day-score" class="text-5xl font-black text-blue-600 italic">0P</h3>
                     </div>
-                    <div class="w-px h-24 bg-white/20"></div>
-                    <div class="text-center">
-                        <p class="text-indigo-100 font-bold text-lg mb-2">누적 전체 포인트</p>
-                        <h2 id="cumulative-score" class="text-7xl font-black italic">0P</h2>
+                    <div class="bg-rose-50 p-5 rounded-[32px] border-2 border-rose-100 flex flex-col justify-center">
+                        <p class="text-rose-400 font-black text-sm mb-1">누적 전체 포인트 ✨</p>
+                        <h3 id="cumulative-score" class="text-5xl font-black text-rose-600 italic">0P</h3>
+                    </div>
+                    <div class="bg-amber-50 p-5 rounded-[32px] border-2 border-amber-100 flex flex-col justify-center">
+                        <p class="text-amber-500 font-black text-sm mb-1">전체 선물 구매 🎁</p>
+                        <h3 id="total-gifts-count" class="text-5xl font-black text-amber-600 italic">0건</h3>
+                    </div>
+                    <div
+                        class="bg-emerald-50 p-5 rounded-[32px] border-2 border-emerald-100 flex flex-col justify-center">
+                        <p class="text-emerald-500 font-black text-sm mb-1">전체 칭찬 횟수 👍</p>
+                        <h3 id="total-praise-count" class="text-5xl font-black text-emerald-600 italic">0회</h3>
+                    </div>
+                    <div
+                        class="bg-orange-50 p-5 rounded-[32px] border-2 border-orange-100 flex flex-col justify-center">
+                        <p class="text-orange-500 font-black text-sm mb-1">전체 주의 횟수 ⚠️</p>
+                        <h3 id="total-caution-count" class="text-5xl font-black text-orange-600 italic">0회</h3>
+                    </div>
+                    <div
+                        class="bg-indigo-50 p-5 rounded-[32px] border-2 border-indigo-100 flex flex-col justify-center">
+                        <p class="text-indigo-400 font-black text-sm mb-1">진행중인 날짜 📅</p>
+                        <h3 id="days-in-progress" class="text-5xl font-black text-indigo-600 italic">0일</h3>
                     </div>
                 </div>
-                <div class="absolute -bottom-10 -right-10 opacity-10 text-[200px] font-black italic">WINNER</div>
-            </div>
 
-            <!-- 2. 중간 랭킹 & 내역 카드 -->
-            <div class="grid grid-cols-2 gap-8">
-                <div class="bg-white rounded-[40px] p-8 shadow-xl border border-white">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <span class="material-symbols-rounded text-emerald-500">trending_up</span> 자주 하는 칭찬 행동
+                <!-- Growth Curve Section -->
+                <div class="flex-1 bg-white rounded-[40px] border-2 border-[#E2E8F0] p-8 flex flex-col overflow-hidden">
+                    <h3 class="text-xl font-black text-gray-800 mb-4 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-indigo-500">show_chart</span> 최근 성장 곡선 📉
                     </h3>
-                    <div id="top-missions-good" class="space-y-4">
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-[40px] p-8 shadow-xl border border-white">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                        <span class="material-symbols-rounded text-rose-500">redeem</span> 선물 구매 상세 내역
-                    </h3>
-                    <div id="gift-purchase-history"
-                        class="space-y-4 max-h-[350px] overflow-y-auto pr-2 custom-scrollbar">
+                    <div class="flex-1 relative">
+                        <canvas id="daily-line-chart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. 하단 그래프 카드 -->
-            <div class="bg-white rounded-[40px] p-10 shadow-xl border border-white">
-                <h3 class="text-2xl font-bold text-gray-800 mb-8">우리 아이 성장 곡선 📉</h3>
-                <div
-                    class="h-64 flex items-center justify-center bg-gray-50 rounded-3xl border-2 border-dashed border-gray-100">
-                    <canvas id="daily-line-chart"></canvas>
+            <!-- Right Column: Scrollable Lists -->
+            <div class="flex-1 flex flex-col gap-6 overflow-hidden">
+                <div class="flex-1 bg-white rounded-[40px] border-2 border-[#E2E8F0] p-6 flex flex-col overflow-hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-black text-emerald-600 flex items-center gap-2">
+                            <span class="material-symbols-rounded">thumb_up</span> 자주 하는 칭찬 행동
+                        </h3>
+                        <button onclick="closeDashboard()"
+                            class="px-4 py-2 bg-gray-800 text-white rounded-xl text-xs font-black active:scale-95">홈으로</button>
+                    </div>
+                    <div id="top-missions-good" class="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar"></div>
+                </div>
+                <div class="flex-1 bg-white rounded-[40px] border-2 border-[#E2E8F0] p-6 flex flex-col overflow-hidden">
+                    <h3 class="text-lg font-black text-rose-500 mb-4 flex items-center gap-2">
+                        <span class="material-symbols-rounded">shopping_bag</span> 선물 구매 상세 내역 🎁
+                    </h3>
+                    <div id="gift-purchase-history" class="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
+                    </div>
                 </div>
             </div>
         </div>
