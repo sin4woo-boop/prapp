@@ -158,17 +158,17 @@ body {
     border: none !important;
     transition: all 0.2s;
     overflow: hidden;
-    padding: clamp(0.5rem, 1.5vh, 1.25rem) !important;
+    padding: 1rem !important;
     min-height: 0;
     aspect-ratio: 1/1.1;
 }
 
 .mission-card span {
-    font-size: clamp(2rem, 5vh, 4rem) !important;
+    font-size: 3rem !important;
 }
 
 .mission-card p.font-black.text-\[15px\] {
-    font-size: clamp(0.7rem, 1.8vh, 1.1rem) !important;
+    font-size: 1rem !important;
     line-height: 1.2;
     overflow: hidden;
     display: -webkit-box;
@@ -179,7 +179,7 @@ body {
 }
 
 .mission-card p.text-2xl {
-    font-size: clamp(1rem, 2.5vh, 2rem) !important;
+    font-size: 1.5rem !important;
 }
 
 /* 프리미엄 컬러 테마 (부드러운 버전) */
@@ -188,61 +188,41 @@ body {
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
 }
 
-/* 태블릿 반응형 (Landscape) */
-@media (max-width: 1366px) {
-    #mission-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+/* LANDSCAPE ONLY OPTIMIZATION & PORTRAIT GUARD */
+@media (orientation: portrait) {
+    #landscape-guard {
+        display: flex !important;
     }
 }
 
-@media (max-width: 1024px) {
-    #mission-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .col-span-8 {
-        grid-column: span 12 / span 12;
-    }
-
-    .col-span-4 {
-        grid-column: span 12 / span 12;
+/* 태블릿 가로 모드 최적화 (Fixed Landscape proportions) */
+@media (min-width: 1024px) {
+    #app {
+        max-width: 1920px;
+        margin: 0 auto;
     }
 
     #home-screen {
-        overflow-y: auto !important;
-        padding-bottom: 2rem !important;
+        padding: 2.5vh 3vw !important;
+        gap: 2vh !important;
     }
 
-    .grid-cols-12 {
-        display: flex;
-        flex-direction: column;
-        height: auto !important;
+    /* 헤더 영역 높이 고정 (비율 안정화) */
+    #home-screen>.grid-cols-12:first-child {
+        height: 110px !important;
     }
 
-    .flex-1.grid.grid-cols-12 {
-        display: flex;
-        flex-direction: column;
-        height: auto !important;
-        overflow: visible !important;
-    }
-
-    .h-full.min-h-0 {
-        height: auto !important;
-        min-height: auto !important;
-    }
-}
-
-/* Portrait 모드 대응 */
-@media (max-aspect-ratio: 1/1) {
+    /* 미션 그리드 6열 고정 */
     #mission-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr) !important;
+        gap: 1.25rem !important;
     }
 }
 
-/* 가로 핏 최적화: 가로가 너무 길어지는 현상 방지 */
-@media (min-width: 1400px) {
-    #app {
-        max-width: 1600px;
+/* 초고해상도 대응 */
+@media (min-width: 1600px) {
+    #home-screen {
+        max-width: 1440px;
         margin: 0 auto;
     }
 }
