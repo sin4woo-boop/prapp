@@ -1,0 +1,17 @@
+{
+  "name": "칭찬 항아리",
+  "short_name": "칭찬항아리",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FF6B9D",
+  "description": "우리 아이 칭찬 포인트 앱",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3112/3112946.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
