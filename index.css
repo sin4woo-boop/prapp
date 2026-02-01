@@ -26,6 +26,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    box-sizing: border-box;
     /* 반응형을 위한 글로벌 폰트 사이즈 변수 */
     --h1-size: clamp(2rem, 6vh, 4.5rem);
     --h2-size: clamp(1.5rem, 4vh, 3rem);
@@ -178,8 +179,9 @@ body {
 }
 
 .mission-card p.font-black.text-\[15px\] {
-    font-size: 0.85rem !important;
-    line-height: 1;
+    font-size: clamp(14px, 1.8vw, 20px) !important;
+    /* 화면 크기에 따라 글자 크기 가변 */
+    line-height: 1.2;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -216,25 +218,33 @@ body {
         margin: 0 auto;
         overflow: hidden !important;
         height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     #home-screen {
-        padding: 1.5vh 2.5vw !important;
-        gap: 1.5vh !important;
-        height: 100vh !important;
-        display: flex !important;
-        flex-direction: column !important;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px !important;
+        height: 100% !important;
+        min-height: 0 !important;
         overflow: hidden !important;
+        padding: 2vh 2.5vw !important;
     }
 
-    /* 상단 헤더 공간 축소 (프로필 영역) */
-    #home-screen>div:first-child {
+    /* 상단 헤더 영역 (이름, 점수, 버튼들) */
+    .header-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 15px !important;
+        flex-shrink: 0;
+        /* 높이 고정 방지 */
         height: min(100px, 12vh) !important;
         min-height: 70px !important;
-        flex-shrink: 0;
     }
 
-    #home-screen>div:first-child .card {
+    .header-grid .card {
         padding: 0.5rem 1.5rem !important;
     }
 
@@ -246,12 +256,16 @@ body {
         gap: 1.25rem !important;
     }
 
-    /* 미션 그리드 보정 (패딩 및 갭 축소) */
+    /* 미션 그리드 (가장 많이 깨지는 부분) */
     #mission-grid {
-        grid-template-columns: repeat(6, 1fr) !important;
-        gap: 0.5rem !important;
+        display: grid !important;
+        /* 태블릿 너비에 따라 칸수를 자동으로 맞춤 */
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+        /* 남는 세로 공간을 모두 차지하도록 설정 */
+        grid-auto-rows: 1fr !important;
+        gap: 10px !important;
         align-content: start;
-        padding-top: 0.5rem !important;
+        padding-top: 5px !important;
         overflow-y: auto !important;
     }
 
