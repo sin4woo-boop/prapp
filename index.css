@@ -13,20 +13,22 @@ body {
         radial-gradient(at 15% 85%, rgba(235, 225, 255, 0.8) 0%, transparent 60%),
         linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
     background-attachment: fixed;
-    height: 100vh;
-    width: 100vw;
     /* 세로모드 방지 및 터치 최적화 */
     touch-action: manipulation;
 }
 
+/* 2. 메인 컨테이너 고정 */
 #app {
     width: 100vw;
     height: 100vh;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overflow: hidden !important;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    touch-action: none;
+    /* 터치로 인한 화면 밀림(바운스) 방지 */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     box-sizing: border-box;
+
     /* 반응형을 위한 글로벌 폰트 사이즈 변수 */
     --h1-size: clamp(2rem, 6vh, 4.5rem);
     --h2-size: clamp(1.5rem, 4vh, 3rem);
@@ -222,30 +224,59 @@ body {
         flex-direction: column !important;
     }
 
-    #home-screen {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 20px !important;
-        height: 100% !important;
-        min-height: 0 !important;
-        overflow: hidden !important;
-        padding: 2vh 2.5vw !important;
-    }
-
-    /* 상단 헤더 영역 (이름, 점수, 버튼들) */
+    /* 1. 상단 헤더 그리드 비율 재조정 */
     .header-grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 15px !important;
+        gap: 10px !important;
+        height: auto !important;
+        min-height: 80px !important;
         flex-shrink: 0;
-        /* 높이 고정 방지 */
-        height: min(100px, 12vh) !important;
-        min-height: 70px !important;
     }
 
     .header-grid .card {
-        padding: 0.5rem 1.5rem !important;
+        padding: 0.5rem 1rem !important;
+    }
+
+    /* 2. 상단 이름 칸 글자 크기 축소 */
+    #profile-name {
+        font-size: clamp(1.2rem, 3vw, 1.8rem) !important;
+        /* 이름이 길어도 한 줄에 나오게 */
+        white-space: nowrap !important;
+        overflow: hidden !important;
+    }
+
+    #profile-emoji {
+        font-size: clamp(2rem, 4vw, 3rem) !important;
+    }
+
+    /* 점수 숫자 크기 조절 */
+    #total-score {
+        font-size: clamp(2rem, 5vh, 3.5rem) !important;
+    }
+
+    /* 3. 대시보드, 선물받기 버튼 글자 크기 대폭 축소 */
+    .header-grid button p {
+        font-size: clamp(1rem, 2.2vw, 1.3rem) !important;
+        /* 3xl에서 대폭 축소 */
+        white-space: nowrap !important;
+        /* 세로로 서는 것 방지 */
+        letter-spacing: -0.05em;
+        /* 자간을 좁혀 공간 확보 */
+        margin: 0 !important;
+    }
+
+    /* 4. 버튼 안의 아이콘 크기도 함께 조절 */
+    .header-grid button span.material-symbols-rounded {
+        font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
+    }
+
+    /* 버튼 컨테이너 정렬 보정 */
+    .header-grid .col-span-4 {
+        gap: 10px !important;
+    }
+
+    .header-grid button {
+        padding: 0.5rem !important;
+        gap: 0.5rem !important;
     }
 
     /* 메인 워크스페이스 공간 축소 및 자동 배분 */
@@ -253,20 +284,258 @@ body {
         flex: 1 !important;
         min-height: 0 !important;
         height: 0 !important;
-        gap: 1.25rem !important;
+        gap: 1rem !important;
     }
 
-    /* 미션 그리드 (가장 많이 깨지는 부분) */
+    #home-screen {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px !important;
+        height: 100% !important;
+    }
+
+    /* 1. 미션 카드: 2줄 구조로 변경하되 높이는 최소화 */
+    .mission-card {
+        flex-direction: column !important;
+        /* 다시 세로 배치로 하되 간격을 좁힘 */
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 6px !important;
+        height: 85px !important;
+        /* 텍스트 2줄을 위한 최소 높이 확보 */
+        aspect-ratio: auto !important;
+        gap: 0 !important;
+    }
+
+    /* 2. 아이콘과 미션명을 한 줄로 (공간 절약) */
+    .mission-card>div:first-child {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        margin-bottom: 2px !important;
+        width: 100%;
+    }
+
+    /* 아이콘 크기 */
+    .mission-card span.material-symbols-rounded {
+        font-size: 1.1rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 미션 이름 */
+    .mission-card p.font-black.text-\[15px\] {
+        font-size: 0.85rem !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 0 !important;
+        flex: 0 1 auto;
+        /* 너비 자동 조절 */
+    }
+
+    /* 3. 포인트(pts) 부활: 2번째 줄에 강조 */
+    .mission-card p.text-2xl {
+        display: block !important;
+        /* 다시 보이게 설정 */
+        font-size: 1rem !important;
+        /* 너무 크지 않게 조절 */
+        font-weight: 900 !important;
+        margin-top: 2px !important;
+    }
+
+    /* 4. 그리드 설정: 카드가 약간 길어졌으니 행 높이 조절 */
     #mission-grid {
-        display: grid !important;
-        /* 태블릿 너비에 따라 칸수를 자동으로 맞춤 */
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
-        /* 남는 세로 공간을 모두 차지하도록 설정 */
-        grid-auto-rows: 1fr !important;
-        gap: 10px !important;
-        align-content: start;
-        padding-top: 5px !important;
+        grid-auto-rows: 85px !important;
+        gap: 8px !important;
         overflow-y: auto !important;
+        /* 18개면 무조건 스크롤이 안전합니다 */
+    }
+
+    /* --- 터치 디바이스(태블릿) 인터랙션 최적화 --- */
+
+    /* 1. 모든 요소의 마우스 호버 효과 강제 제거 */
+    .card:hover,
+    .mission-card:hover,
+    .bento-card:hover,
+    button:hover {
+        transform: none !important;
+        /* 커지거나 움직이는 효과 제거 */
+        box-shadow: none !important;
+        /* 호버 시 생기는 추가 그림자 제거 */
+        filter: none !important;
+    }
+
+    /* 2. 클릭(터치)했을 때만 살짝 반응하도록 변경 (사용자 피드백용) */
+    .mission-card:active,
+    button:active {
+        transform: scale(0.95) !important;
+        /* 눌렀을 때만 살짝 작아짐 */
+        opacity: 0.8;
+    }
+
+    /* 3. 불필요한 부유 애니메이션 중단 (배터리 절약 및 깔끔한 화면) */
+    .animate-float,
+    .animate-bounce-slow {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    /* 4. 터치 시 발생하는 파란색 하이라이트 박스 제거 */
+    * {
+        -webkit-tap-highlight-color: transparent !important;
+        outline: none !important;
+    }
+
+    /* --- 팝업(모달) 최적화 --- */
+
+    /* 1. 팝업 기본 설정: 너비를 고정하지 않고 최대치만 설정 */
+    #gift-shop-modal .card,
+    #day-detail-modal .card,
+    #mission-settings-modal .card,
+    #universal-modal .card {
+        width: 90% !important;
+        /* 기본적으로 화면 너비에 맞춤 */
+        max-width: 500px !important;
+        /* 일반 팝업은 최대 500px */
+        max-height: 85vh !important;
+        padding: 25px !important;
+        border-radius: 24px !important;
+    }
+
+    /* 2. [핵심] 배지 컬렉션 팝업만 넓게 확장 */
+    #badge-collection-modal .card {
+        width: 95% !important;
+        max-width: 1000px !important;
+        /* 4개의 배지가 들어갈 충분한 너비 확보 */
+        max-height: 90vh !important;
+        padding: 25px !important;
+        border-radius: 24px !important;
+    }
+
+    /* 3. 배지 팝업 내 텍스트 세로 서기 방지 */
+    .badge-item p {
+        white-space: nowrap !important;
+        /* '책읽기 기초' 등이 한 줄로 나오게 */
+        font-size: 0.9rem !important;
+        margin-top: 5px !important;
+    }
+
+    /* 배지 진행률(2/10회) 텍스트 크기 조절 */
+    .badge-item .text-xl {
+        font-size: 1rem !important;
+    }
+
+    /* 4. 배지 그리드 간격 조정 */
+    #badge-collection-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        /* 무조건 가로 4개 유지 */
+        gap: 15px !important;
+        padding: 10px !important;
+    }
+
+    /* 2. 팝업 내 텍스트 크기 일괄 축소 */
+    #gift-shop-modal h2,
+    #universal-modal h3,
+    #day-detail-modal h2 {
+        font-size: 1.5rem !important;
+        /* 제목 크기 축소 */
+        margin-bottom: 15px !important;
+    }
+
+    #universal-modal p,
+    #gift-shop-modal label {
+        font-size: 1rem !important;
+        /* 설명 문구 축소 */
+        margin-bottom: 10px !important;
+    }
+
+    /* 3. 입력창(Input) 및 버튼 사이즈 조절 */
+    input[type="text"],
+    input[type="number"],
+    #universal-modal input {
+        padding: 12px 15px !important;
+        font-size: 1.1rem !important;
+        border-radius: 12px !important;
+    }
+
+    #universal-modal button,
+    #gift-shop-modal button {
+        padding: 12px !important;
+        font-size: 1.2rem !important;
+        border-radius: 16px !important;
+        height: auto !important;
+    }
+
+    /* 4. 닫기 버튼(X) 위치 및 크기 조정 */
+    .close-btn {
+        width: 44px !important;
+        height: 44px !important;
+        top: 15px !important;
+        right: 15px !important;
+    }
+
+    .close-btn span {
+        font-size: 20px !important;
+    }
+
+    /* 5. 점수 표시 칸(선물샵 등) 축소 */
+    #shop-score {
+        font-size: 2.5rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 1. 이번 주 활동 (날짜 카드) 다이어트 */
+    #week-display .card {
+        padding: 0.5rem !important;
+        /* 내부 여백 대폭 축소 */
+        gap: 2px !important;
+    }
+
+    #week-display p.text-2xl {
+        font-size: 0.9rem !important;
+    }
+
+    /* 요일 (월, 화...) */
+    #week-display p.text-4xl {
+        font-size: 1.2rem !important;
+    }
+
+    /* 날짜 숫자 */
+    #week-display p.text-2xl.font-black {
+        font-size: 1rem !important;
+    }
+
+    /* 포인트 점수 */
+
+    /* 2. 배지 영역 축소 (배지가 잘리지 않게) */
+    .tier-badge.scale-125 {
+        width: 70px !important;
+        /* 110px -> 70px */
+        height: 70px !important;
+        /* 110px -> 70px */
+        border-radius: 16px !important;
+    }
+
+    .tier-badge.scale-125 .tier-icon {
+        font-size: 35px !important;
+        /* 아이콘 크기 축소 */
+    }
+
+    #main-badge-display p.text-3xl {
+        font-size: 1rem !important;
+        /* 배지 이름 글자 크기 축소 */
+        margin-top: 5px !important;
+    }
+
+    /* 3. 섹션 타이틀 (오늘의 미션, 이번 주 활동 등) 크기 조절 */
+    #home-screen h3 {
+        font-size: 1.2rem !important;
+        /* 3xl -> 1.2rem */
+        margin-bottom: 10px !important;
+        white-space: nowrap !important;
     }
 
     /* 사이드바 액션 버튼 텍스트 축소 */

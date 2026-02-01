@@ -177,8 +177,8 @@ function renderMissions() {
         card.innerHTML = `
             <div>
                 <span class="material-symbols-rounded">${mission.icon}</span>
+                <p class="font-black text-[15px]">${mission.label}</p>
             </div>
-            <p class="font-black text-[15px]">${mission.label}</p>
             <p class="font-black text-2xl">
                 ${mission.pts > 0 ? '+' : ''}${mission.pts}P
             </p>
