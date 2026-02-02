@@ -1510,3 +1510,77 @@ body {
     background: linear-gradient(90deg, #FF6B9D, #FEC84B);
     border-radius: 2px;
 }
+
+/* --- [USER REQUEST] Goal Mission Golden Ratio Layout (3 Items) --- */
+/* 1. 목표 리스트 컨테이너: 높이 100% 활용 */
+#goal-display {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    /* 위에서부터 채움 */
+    gap: 2% !important;
+    /* 사이 간격도 비율로 (3개 사이 틈) */
+    height: 100% !important;
+    padding: 2px !important;
+    overflow: hidden !important;
+    /* 튀어나옴 방지 */
+}
+
+/* 2. 개별 목표 카드: 무조건 높이의 32% 차지 */
+#goal-display .goal-card {
+    flex: none !important;
+    /* 맘대로 늘어나거나 줄어들지 않음 */
+    height: 32% !important;
+    /* 🌟핵심: 3개가 들어가면 96% + 갭4% = 100% */
+    padding: 0 16px !important;
+    /* 좌우 패딩만 주고 상하는 자동 정렬 */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    /* 내용물 수직 중앙 정렬 */
+    border-radius: 20px !important;
+}
+
+/* 3. 내용물 크기 최적화 (카드가 작아질 경우 대비) */
+#goal-display h4 {
+    font-size: clamp(0.9rem, 2vh, 1.2rem) !important;
+    /* 화면 높이에 따라 글자도 변함 */
+    margin-bottom: 2px !important;
+}
+
+#goal-display .h-6 {
+    height: 15% !important;
+    /* 진행바 높이도 카드 크기에 비례 */
+    min-height: 8px !important;
+}
+
+/* --- UNIFIED SPACING FIX --- */
+/* 태블릿 화면에서 모든 영역의 간격을 16px로 통일하여 균형 맞춤 */
+@media (orientation: landscape) {
+    #home-screen {
+        gap: 16px !important;
+        padding-top: 16px !important;
+    }
+
+    .header-grid {
+        gap: 16px !important;
+    }
+
+    /* Header Internal Gaps */
+    .header-grid>.col-span-8 {
+        gap: 16px !important;
+    }
+
+    .header-grid .col-span-4 {
+        gap: 16px !important;
+    }
+
+    /* Body Columns Internal Gaps */
+    .flex-1.grid.grid-cols-12 {
+        gap: 16px !important;
+    }
+
+    .flex-1.grid.grid-cols-12>div {
+        gap: 16px !important;
+    }
+}
