@@ -1,11 +1,10 @@
-* {
+﻿* {
     font-family: 'Noto Sans KR', sans-serif;
     -webkit-tap-highlight-color: transparent;
 }
 
 body {
     overflow: hidden;
-    /* 프리미엄 메쉬 그라데이션 배경: 더 깊고 부드러운 색조로 변경 (Premium Mesh v2) */
     background:
         radial-gradient(at 15% 15%, rgba(255, 230, 240, 0.8) 0%, transparent 60%),
         radial-gradient(at 85% 15%, rgba(255, 248, 220, 0.8) 0%, transparent 60%),
@@ -13,11 +12,9 @@ body {
         radial-gradient(at 15% 85%, rgba(235, 225, 255, 0.8) 0%, transparent 60%),
         linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
     background-attachment: fixed;
-    /* 세로모드 방지 및 터치 최적화 */
     touch-action: manipulation;
 }
 
-/* 2. 메인 컨테이너 고정 */
 #app {
     width: 100vw;
     height: 100vh;
@@ -25,11 +22,9 @@ body {
     display: flex;
     flex-direction: column;
     touch-action: none;
-    /* 터치로 인한 화면 밀림(바운스) 방지 */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     box-sizing: border-box;
 
-    /* 반응형을 위한 글로벌 폰트 사이즈 변수 */
     --h1-size: clamp(2rem, 6vh, 4.5rem);
     --h2-size: clamp(1.5rem, 4vh, 3rem);
     --h3-size: clamp(1.2rem, 3vh, 2rem);
@@ -37,7 +32,6 @@ body {
     --mission-grid-gap: clamp(0.5rem, 1vw, 1rem);
 }
 
-/* 애니메이션 */
 @keyframes float {
 
     0%,
@@ -125,31 +119,18 @@ body {
 .card {
     border-radius: 32px;
     position: relative;
-    /* 중요: 외부 그림자를 제거하여 모서리 뒤로 비치는 회색 잔상(Ghosting) 원천 차단 */
     box-shadow: none !important;
 }
 
-/* 프리미엄 리퀴드 글래스(Liquid Glass) 전용 마스터 클래스 (섀도우-프리 모드) */
 .glass-card {
     background: rgba(255, 255, 255, 0.65) !important;
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-    /* 그림자 대신 선명하고 두꺼운 테두리로 시인성 확보 */
     border: 2px solid rgba(255, 255, 255, 0.5) !important;
-    /* 내부 발광(inset)만 사용하여 아티팩트 방지 */
     box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3) !important;
     overflow: hidden;
 }
 
-/* 4. 상단 포인트 카드 (이준이 490P 부분) */
-.bg-gradient-to-br {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: space-around !important;
-    padding: 40px !important;
-}
-
-/* 미션 카드 공통 (태블릿 최적화: 호버 제거) */
 .mission-card {
     position: relative;
     cursor: pointer;
@@ -159,7 +140,6 @@ body {
     overflow: hidden;
     padding: 0.5rem !important;
     min-height: 0;
-    /* 세로 공간 확보를 위해 aspect-ratio 조정 */
     aspect-ratio: 1.2 / 1;
     display: flex;
     flex-direction: column;
@@ -173,7 +153,6 @@ body {
 
 .mission-card p.font-black.text-\[15px\] {
     font-size: clamp(14px, 1.8vw, 20px) !important;
-    /* 화면 크기에 따라 글자 크기 가변 */
     line-height: 1.2;
     overflow: hidden;
     display: -webkit-box;
@@ -191,20 +170,17 @@ body {
     color: white !important;
 }
 
-/* 프리미엄 컬러 테마 (부드러운 버전) */
 .premium-blue {
     background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%) !important;
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.15);
 }
 
-/* LANDSCAPE ONLY OPTIMIZATION & PORTRAIT GUARD */
 @media (orientation: portrait) {
     #landscape-guard {
         display: flex !important;
     }
 }
 
-/* 태블릿 가로 모드 최적화 (Vertical Fitting) */
 @media (orientation: landscape) {
     #app {
         max-width: 1920px;
@@ -215,7 +191,6 @@ body {
         flex-direction: column !important;
     }
 
-    /* 1. 상단 헤더 그리드 비율 재조정 */
     .header-grid {
         gap: 10px !important;
         height: auto !important;
@@ -227,10 +202,8 @@ body {
         padding: 0.5rem 1rem !important;
     }
 
-    /* 2. 상단 이름 칸 글자 크기 축소 */
     #profile-name {
         font-size: clamp(1.2rem, 3vw, 1.8rem) !important;
-        /* 이름이 길어도 한 줄에 나오게 */
         white-space: nowrap !important;
         overflow: hidden !important;
     }
@@ -239,28 +212,21 @@ body {
         font-size: clamp(2rem, 4vw, 3rem) !important;
     }
 
-    /* 점수 숫자 크기 조절 */
     #total-score {
         font-size: clamp(2rem, 5vh, 3.5rem) !important;
     }
 
-    /* 3. 대시보드, 선물받기 버튼 글자 크기 대폭 축소 */
     .header-grid button p {
         font-size: clamp(1rem, 2.2vw, 1.3rem) !important;
-        /* 3xl에서 대폭 축소 */
         white-space: nowrap !important;
-        /* 세로로 서는 것 방지 */
         letter-spacing: -0.05em;
-        /* 자간을 좁혀 공간 확보 */
         margin: 0 !important;
     }
 
-    /* 4. 버튼 안의 아이콘 크기도 함께 조절 */
     .header-grid button span.material-symbols-rounded {
         font-size: clamp(1.8rem, 4vw, 2.5rem) !important;
     }
 
-    /* 버튼 컨테이너 정렬 보정 */
     .header-grid .col-span-4 {
         gap: 10px !important;
     }
@@ -270,7 +236,6 @@ body {
         gap: 0.5rem !important;
     }
 
-    /* 메인 워크스페이스 공간 축소 및 자동 배분 */
     .flex-1.grid.grid-cols-12 {
         flex: 1 !important;
         min-height: 0 !important;
@@ -286,20 +251,16 @@ body {
         height: 100% !important;
     }
 
-    /* 1. 미션 카드: 2줄 구조로 변경하되 높이는 최소화 */
     .mission-card {
         flex-direction: column !important;
-        /* 다시 세로 배치로 하되 간격을 좁힘 */
         justify-content: center !important;
         align-items: center !important;
         padding: 6px !important;
         height: 85px !important;
-        /* 텍스트 2줄을 위한 최소 높이 확보 */
         aspect-ratio: auto !important;
         gap: 0 !important;
     }
 
-    /* 2. 아이콘과 미션명을 한 줄로 (공간 절약) */
     .mission-card>div:first-child {
         display: flex !important;
         align-items: center !important;
@@ -309,13 +270,11 @@ body {
         width: 100%;
     }
 
-    /* 아이콘 크기 */
     .mission-card span.material-symbols-rounded {
         font-size: 1.1rem !important;
         margin-bottom: 0 !important;
     }
 
-    /* 미션 이름 */
     .mission-card p.font-black.text-\[15px\] {
         font-size: 0.85rem !important;
         white-space: nowrap;
@@ -323,127 +282,96 @@ body {
         text-overflow: ellipsis;
         margin-top: 0 !important;
         flex: 0 1 auto;
-        /* 너비 자동 조절 */
-    }
+        }
 
-    /* 3. 포인트(pts) 부활: 2번째 줄에 강조 */
     .mission-card p.text-2xl {
         display: block !important;
-        /* 다시 보이게 설정 */
         font-size: 1rem !important;
-        /* 너무 크지 않게 조절 */
         font-weight: 900 !important;
         margin-top: 2px !important;
     }
 
-    /* 4. 그리드 설정: 카드가 약간 길어졌으니 행 높이 조절 */
     #mission-grid {
         grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
         grid-auto-rows: 85px !important;
         gap: 8px !important;
         overflow-y: auto !important;
-        /* 18개면 무조건 스크롤이 안전합니다 */
-    }
+        }
 
-    /* --- 터치 디바이스(태블릿) 인터랙션 최적화 --- */
-
-    /* 1. 모든 요소의 마우스 호버 효과 강제 제거 */
     .card:hover,
     .mission-card:hover,
     .bento-card:hover,
     button:hover {
         transform: none !important;
-        /* 커지거나 움직이는 효과 제거 */
         box-shadow: none !important;
-        /* 호버 시 생기는 추가 그림자 제거 */
         filter: none !important;
     }
 
-    /* 2. 클릭(터치)했을 때만 살짝 반응하도록 변경 (사용자 피드백용) */
     .mission-card:active,
     button:active {
         transform: scale(0.95) !important;
-        /* 눌렀을 때만 살짝 작아짐 */
         opacity: 0.8;
     }
 
-    /* 3. 불필요한 부유 애니메이션 중단 (배터리 절약 및 깔끔한 화면) */
     .animate-float,
     .animate-bounce-slow {
         animation: none !important;
         transform: none !important;
     }
 
-    /* 4. 터치 시 발생하는 파란색 하이라이트 박스 제거 */
     * {
         -webkit-tap-highlight-color: transparent !important;
         outline: none !important;
     }
 
-    /* --- 팝업(모달) 최적화 --- */
-
-    /* 1. 팝업 기본 설정: 너비를 고정하지 않고 최대치만 설정 */
     #gift-shop-modal .card,
     #day-detail-modal .card,
     #mission-settings-modal .card,
     #universal-modal .card {
         width: 90% !important;
-        /* 기본적으로 화면 너비에 맞춤 */
         max-width: 500px !important;
-        /* 일반 팝업은 최대 500px */
         max-height: 85vh !important;
         padding: 25px !important;
         border-radius: 24px !important;
     }
 
-    /* 2. [핵심] 배지 컬렉션 팝업만 넓게 확장 */
     #badge-collection-modal .card {
         width: 95% !important;
         max-width: 1000px !important;
-        /* 4개의 배지가 들어갈 충분한 너비 확보 */
         max-height: 90vh !important;
         padding: 25px !important;
         border-radius: 24px !important;
     }
 
-    /* 3. 배지 팝업 내 텍스트 세로 서기 방지 */
     .badge-item p {
         white-space: nowrap !important;
-        /* '책읽기 기초' 등이 한 줄로 나오게 */
         font-size: 0.9rem !important;
         margin-top: 5px !important;
     }
 
-    /* 배지 진행률(2/10회) 텍스트 크기 조절 */
     .badge-item .text-xl {
         font-size: 1rem !important;
     }
 
-    /* 4. 배지 그리드 간격 조정 */
     #badge-collection-grid {
         grid-template-columns: repeat(4, 1fr) !important;
-        /* 무조건 가로 4개 유지 */
         gap: 15px !important;
         padding: 10px !important;
     }
 
-    /* 2. 팝업 내 텍스트 크기 일괄 축소 */
     #gift-shop-modal h2,
     #universal-modal h3,
     #day-detail-modal h2 {
         font-size: 1.5rem !important;
-        /* 제목 크기 축소 */
         margin-bottom: 15px !important;
     }
 
     #universal-modal p,
     #gift-shop-modal label {
         font-size: 1rem !important;
-        /* 설명 문구 축소 */
         margin-bottom: 10px !important;
     }
 
-    /* 3. 입력창(Input) 및 버튼 사이즈 조절 */
     input[type="text"],
     input[type="number"],
     #universal-modal input {
@@ -452,15 +380,14 @@ body {
         border-radius: 12px !important;
     }
 
-    #universal-modal button,
-    #gift-shop-modal button {
+    #universal-modal button:not(.close-btn),
+    #gift-shop-modal button:not(.close-btn) {
         padding: 12px !important;
         font-size: 1.2rem !important;
         border-radius: 16px !important;
         height: auto !important;
     }
 
-    /* 4. 닫기 버튼(X) 위치 및 크기 조정 */
     .close-btn {
         width: 44px !important;
         height: 44px !important;
@@ -468,12 +395,11 @@ body {
         right: 15px !important;
     }
 
-    .close-btn span {
+    .close-btn i {
         font-size: 20px !important;
     }
 
 
-    /* 1. 미션 그리드: 무조건 6개씩 3줄 고정 */
     #mission-grid {
         display: grid !important;
         grid-template-columns: repeat(6, 1fr) !important;
@@ -486,7 +412,6 @@ body {
         padding-top: 0 !important;
     }
 
-    /* 2. 오늘의 미션 상단 여백 줄이기 */
     #home-screen {
         padding-top: 10px !important;
         gap: 12px !important;
@@ -494,10 +419,8 @@ body {
 
     #home-screen h3 {
         margin-bottom: 8px !important;
-        /* 제목 아래 여백 축소 */
-    }
+        }
 
-    /* 3. 이번 주 활동 글자 세로 간격 줄이기 */
     #week-display .card {
         padding: 8px 4px !important;
         gap: 2px !important;
@@ -515,19 +438,16 @@ body {
         font-size: 1rem !important;
     }
 
-    /* 4. 배지 크기 수정 및 텍스트 가독성 확보 */
     #main-badge-display {
         padding: 5px !important;
         gap: 10px !important;
     }
 
-    /* 대표 배지 카드 내부 레이아웃 */
     #main-badge-display .card {
         padding: 15px 10px !important;
         margin: 0 !important;
     }
 
-    /* 배지 아이콘 크기 줄이기 */
     .tier-badge.scale-125 {
         width: 70px !important;
         height: 70px !important;
@@ -539,7 +459,6 @@ body {
         font-size: 40px !important;
     }
 
-    /* 안 보였던 배지 이름 텍스트 강제 노출 */
     #main-badge-display p.text-3xl {
         font-size: 1.2rem !important;
         display: block !important;
@@ -548,7 +467,6 @@ body {
         margin-top: 0 !important;
     }
 
-    /* 5. 전체적인 섹션 높이 밸런스 조정 */
     .flex-\[4\.1\] {
         flex: 4 !important;
     }
@@ -557,9 +475,6 @@ body {
         flex: 2 !important;
     }
 
-    /* --- 6. 대시보드 및 글로벌 레이아웃 초압축 (User Request) --- */
-
-    /* 1. 전역 스크롤 금지 및 전체 화면 고정 */
     html,
     body,
     #app {
@@ -570,7 +485,6 @@ body {
         padding: 0;
     }
 
-    /* 1. 설정창 버그 해결: 전체 화면을 확실히 덮도록 수정 */
     #settings-screen,
     #dashboard-screen {
         position: fixed !important;
@@ -582,24 +496,20 @@ body {
         background: #f9fafb !important;
         display: flex !important;
         flex-direction: row !important;
-        /* 설정창 내부 레이아웃 유지 */
         overflow-y: auto !important;
         padding: 15px !important;
     }
 
-    /* 대시보드가 숨겨져 있을 때는 보이지 않게 처리 (ID+Class로 명시도 확보) */
     #dashboard-screen.hidden,
     #settings-screen.hidden {
         display: none !important;
     }
 
-    /* 태블릿 화면을 넘지 않도록 강제 설정 */
     #dashboard-screen {
         max-height: 100vh !important;
         overflow: hidden !important;
     }
 
-    /* 박스 디자인 통일 */
     #dashboard-screen .grid>div {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -609,13 +519,11 @@ body {
         transform: scale(0.98);
     }
 
-    /* 대시보드 캔버스 크기 강제 피팅 */
     canvas {
         width: 100% !important;
         height: 100% !important;
     }
 
-    /* 오른쪽 리스트 아이템 디자인 압축 */
     .top-mission-item,
     #gift-purchase-history .history-item {
         background: white !important;
@@ -631,7 +539,6 @@ body {
         margin-bottom: 8px;
     }
 
-    /* 스크롤바 최소화 */
     .custom-scrollbar::-webkit-scrollbar {
         width: 4px;
     }
@@ -641,20 +548,15 @@ body {
         border-radius: 10px;
     }
 
-    /* 2. 이번 주 활동: 날짜 카드 세로 간격 압축 */
     #week-display {
         align-items: center !important;
-        /* 세로 중앙 정렬로 공간 낭비 방지 */
         gap: 8px !important;
     }
 
     #week-display .card {
         padding: 8px 4px !important;
-        /* 안쪽 여백 축소 */
         height: auto !important;
-        /* 높이 자동 조절 */
         min-height: 90px !important;
-        /* 최소 높이만 보장 */
         flex: 1;
         gap: 2px !important;
     }
@@ -664,12 +566,10 @@ body {
         line-height: 1.1 !important;
     }
 
-    /* 3. 대시보드 디자인: 제목 옆에 숫자 배치 */
     .bento-card {
         padding: 15px !important;
         display: flex !important;
         flex-direction: row !important;
-        /* 가로로 배치 */
         align-items: center !important;
         justify-content: space-between !important;
         height: auto !important;
@@ -689,25 +589,19 @@ body {
 
     .bento-card .text-6xl {
         font-size: 2.2rem !important;
-        /* 숫자 크기를 제목과 어울리게 조절 */
         margin: 0 !important;
         font-weight: 950;
         display: inline-block !important;
         vertical-align: middle;
     }
 
-    /* 불필요한 설명글 숨기기 */
     .bento-card p.text-sm {
         display: none !important;
     }
 
-    /* 4. 기타 미세 여백 압축 */
     .bento-card {
         border-top-width: 6px !important;
-        /* 헤더 라인 두께 조절 */
-    }
-
-    /* --- [USER REQUEST] Dashboard Overhaul: Layered Minimal Style --- */
+        }
 
     #dashboard-screen .top-mission-item {
         background: #F8FAFC !important;
@@ -734,47 +628,30 @@ body {
     }
 
 
-    /* 16:10 최적화 해제 (스크롤형으로 전환되므로) */
-
-    /* --- [USER REQUEST] 메인 홈 화면 디테일 및 통합 폴리싱 --- */
-
-    /* 1. 각 섹션 제목(h3) 상단 여백 최소화 및 아이콘 크기 조정 */
     #home-screen h3 {
         margin-top: 0 !important;
-        /* 상단 여백 제거 */
         margin-bottom: 6px !important;
-        /* 아래 미션들과의 간격 */
         font-size: 1.4rem !important;
-        /* 텍스트 크기 적정화 */
         display: flex;
         align-items: center;
         gap: 6px;
     }
 
-    /* 제목 옆 아이콘을 텍스트 높이에 맞게 축소 */
     #home-screen h3 span.text-4xl {
         font-size: 1.4rem !important;
-        /* 텍스트 높이와 동일하게 조정 */
-    }
+        }
 
-    /* 2. 미션 그리드 및 전체 컨테이너 여백 압축 */
     #home-screen {
         padding-top: 5px !important;
-        /* 최상단 여백 최소화 */
         gap: 10px !important;
-        /* 섹션 간 간격 축소 */
-    }
+        }
 
-    /* 3. 배지 영역 세밀 조정 */
     .tier-badge.scale-125 {
         width: 65px !important;
-        /* 크기 아주 약간 더 축소 */
         height: 65px !important;
         margin-bottom: 20px !important;
-        /* 밑에 텍스트(배지이름)와의 간격 확보 */
-    }
+        }
 
-    /* 배지 이름 텍스트 스타일 */
     #main-badge-display p.text-3xl {
         font-size: 1.1rem !important;
         margin-top: 5px !important;
@@ -782,18 +659,14 @@ body {
         font-weight: 800 !important;
     }
 
-    /* 4. 이번 주 활동 및 목표 미션 영역 내부 여백 줄이기 */
     .glass-card {
         padding: 12px 15px !important;
-        /* 내부 패딩 최적화 */
-    }
+        }
 
     #week-display {
         gap: 6px !important;
-        /* 요일별 카드 간격 축소 */
-    }
+        }
 
-    /* 5. 대시보드 텍스트 및 아이콘 정렬 (글로벌 적용이지만 여기서 보정) */
     .bento-card h3 {
         display: flex;
         align-items: center;
@@ -802,12 +675,10 @@ body {
 
     .bento-card h3 .material-symbols-rounded {
         font-size: 1.4rem !important;
-        /* 대시보드 아이콘도 텍스트 높이로 */
         vertical-align: middle;
     }
 }
 
-/* 4. 배지 크기 및 텍스트 가독성 */
 .tier-badge.scale-125 {
     width: 80px !important;
     height: 80px !important;
@@ -821,7 +692,6 @@ body {
     color: #374151 !important;
 }
 
-/* 5. 메인 그리드 및 상단 여백 압축 */
 #home-screen {
     padding: 10px 20px !important;
     gap: 10px !important;
@@ -834,11 +704,9 @@ body {
     flex: 1 !important;
 }
 
-/* 4. 대시보드 하단 차트 및 리스트 영역 높이 조절 */
 #monthly-chart {
     height: 120px !important;
-    /* 차트 높이 고정 */
-}
+    }
 
 #top-missions-good,
 #top-missions-bad {
@@ -849,14 +717,12 @@ body {
     gap: 4px !important;
 }
 
-/* 1. 미션 카드: 2줄 구조로 변경하되 높이는 최소화 */
 .mission-card {
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
     padding: 5px !important;
     min-height: 0 !important;
-    /* 높이 제한 해제하여 그리드에 맞춤 */
     height: auto !important;
     aspect-ratio: auto !important;
     gap: 0 !important;
@@ -864,10 +730,8 @@ body {
 
 .mission-card span.material-symbols-rounded {
     font-size: 2rem !important;
-    /* 아이콘 크기 살짝 축소 */
-}
+    }
 
-/* 6. 헤더 및 이번 주 활동 영역 높이 압축 */
 #home-screen {
     padding: 10px 15px !important;
     gap: 12px !important;
@@ -878,7 +742,6 @@ body {
     margin-bottom: 5px !important;
 }
 
-/* 2. 아이콘과 미션명을 한 줄로 (공간 절약) */
 .mission-card>div:first-child {
     display: flex !important;
     align-items: center !important;
@@ -888,13 +751,11 @@ body {
     width: 100%;
 }
 
-/* 아이콘 크기 */
 .mission-card span.material-symbols-rounded {
     font-size: 1.1rem !important;
     margin-bottom: 0 !important;
 }
 
-/* 미션 이름 */
 .mission-card p.font-black.text-\[15px\] {
     font-size: 0.85rem !important;
     white-space: nowrap;
@@ -904,7 +765,6 @@ body {
     flex: 0 1 auto;
 }
 
-/* 3. 포인트(pts) 부활 */
 .mission-card p.text-2xl {
     display: block !important;
     font-size: 1rem !important;
@@ -912,15 +772,12 @@ body {
     margin-top: 2px !important;
 }
 
-/* 3. 섹션 타이틀 (오늘의 미션, 이번 주 활동 등) 크기 조절 */
 #home-screen h3 {
     font-size: 1.2rem !important;
-    /* 3xl -> 1.2rem */
     margin-bottom: 10px !important;
     white-space: nowrap !important;
 }
 
-/* 사이드바 액션 버튼 텍스트 축소 */
 .col-span-4.flex.flex-col.gap-6 button p {
     font-size: 1.1rem !important;
 }
@@ -934,7 +791,6 @@ body {
     gap: 1rem !important;
 }
 
-/* 하단 벤트형 카드 패딩 축소 */
 .bento-card {
     padding: 1rem !important;
 }
@@ -944,7 +800,6 @@ body {
     margin-bottom: 0.5rem !important;
 }
 
-/* 회전 가드 텍스트 축소 */
 #landscape-guard span.material-symbols-rounded {
     font-size: 60px !important;
     margin-bottom: 15px !important;
@@ -958,7 +813,6 @@ body {
     font-size: clamp(0.9rem, 1.5vw, 1.1rem) !important;
 }
 
-/* 초고해상도 대응 */
 @media (min-width: 1600px) {
     #home-screen {
         max-width: 1440px;
@@ -967,56 +821,59 @@ body {
 }
 
 .premium-indigo {
-    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%) !important;
+    background: linear-gradient(135deg, #6f73e6 0%, #8d97ea 100%) !important;
     box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
 }
 
 .premium-violet {
-    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%) !important;
+    background: linear-gradient(135deg, #9369ea 0%, #ac96ea 100%) !important;
     box-shadow: 0 4px 15px rgba(139, 92, 246, 0.15);
 }
 
 .premium-purple {
-    background: linear-gradient(135deg, #9b6fff 0%, #b892ff 100%) !important;
+    background: linear-gradient(135deg, #9f7be7 0%, #b29fe6 100%) !important;
     box-shadow: 0 4px 15px rgba(155, 111, 255, 0.15);
 }
 
 .premium-skyblue {
-    background: linear-gradient(135deg, #4da3ff 0%, #7ec2ff 100%) !important;
+    background: linear-gradient(135deg, #5e9ee7 0%, #88bae8 100%) !important;
     box-shadow: 0 4px 15px rgba(77, 163, 255, 0.15);
 }
 
 .premium-rose {
-    background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%) !important;
+    background: linear-gradient(135deg, #eb5974 0%, #ec8595 100%) !important;
     box-shadow: 0 4px 15px rgba(244, 63, 94, 0.15);
 }
 
 .premium-red {
-    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%) !important;
+    background: linear-gradient(135deg, #e45b5b 0%, #e68a8a 100%) !important;
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);
 }
 
 .premium-orange {
-    background: linear-gradient(135deg, #f97316 0%, #fb923c 100%) !important;
+    background: linear-gradient(135deg, #e8863d 0%, #eba666 100%) !important;
     box-shadow: 0 4px 15px rgba(249, 115, 22, 0.15);
 }
 
 .premium-amber {
-    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%) !important;
+    background: linear-gradient(135deg, #e8a93f 0%, #e7ba73 100%) !important;
     box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
 }
 
 .premium-fuchsia {
-    background: linear-gradient(135deg, #d946ef 0%, #e879f9 100%) !important;
+    background: linear-gradient(135deg, #c65dd8 0%, #d78fe2 100%) !important;
     box-shadow: 0 4px 15px rgba(217, 70, 239, 0.15);
 }
 
-/* 활성 효과 (Today 카드와 유사한 내부 테두리) */
+.shadow-blue-glow {
+    box-shadow: none !important;
+}
+
 .mission-card::after {
     content: '';
     position: absolute;
     inset: 0;
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    border: 0;
     border-radius: inherit;
     pointer-events: none;
 }
@@ -1026,7 +883,6 @@ body {
     color: white !important;
 }
 
-/* 설정 페이지 미션 카드 */
 #mission-settings-grid .card {
     transition: all 0.2s;
     border: 2px solid #f3f4f6;
@@ -1039,7 +895,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* 공통 모달 스타일 - 강제 불투명 (솔리드 화이트) */
 #gift-shop-modal .card,
 #day-detail-modal .card,
 #mission-settings-modal .card,
@@ -1054,7 +909,6 @@ body {
     border: 3px solid #f3f4f6 !important;
 }
 
-/* 닫기 버튼(X) 가시성 극대화 */
 .close-btn {
     background: #ffffff !important;
     color: #1f2937 !important;
@@ -1075,6 +929,89 @@ body {
     transform: scale(0.85);
 }
 
+@keyframes missionModalIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#mission-complete-content.mission-result-card {
+    background: rgba(255, 255, 255, 0.985) !important;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 28px 70px rgba(15, 23, 42, 0.18) !important;
+    animation: missionModalIn 180ms ease-out;
+}
+
+#mission-complete-content .mission-result-icon {
+    font-size: 5.5rem;
+    line-height: 1;
+}
+
+#mission-complete-content.tone-success .mission-result-icon {
+    text-shadow: 0 0 18px rgba(255, 107, 157, 0.22);
+}
+
+#mission-complete-content.tone-penalty .mission-result-icon {
+    text-shadow: none;
+    color: #334155 !important;
+}
+
+#mission-complete-content .mission-result-points {
+    margin: 0 0 8px 0;
+    font-size: clamp(4rem, 8.2vh, 5rem);
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+}
+
+#mission-complete-content .mission-result-points.success {
+    color: #ff5f96;
+}
+
+#mission-complete-content .mission-result-points.penalty {
+    color: #b14d5f;
+}
+
+#mission-complete-content .mission-result-headline {
+    margin: 0 0 10px 0;
+    font-size: clamp(2.5rem, 5.3vh, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+#mission-complete-content .mission-result-headline.success {
+    color: #f05d92;
+}
+
+#mission-complete-content .mission-result-headline.penalty {
+    color: #475569;
+}
+
+#mission-complete-content .mission-result-message {
+    margin: 0 0 30px 0;
+    font-size: clamp(1.35rem, 2.9vh, 1.7rem);
+    font-weight: 700;
+    color: rgba(30, 41, 59, 0.86);
+    white-space: pre-line;
+}
+
+#mission-complete-content .mission-result-button {
+    will-change: transform;
+}
+
+#mission-complete-content .mission-result-button:active {
+    transform: scale(0.97);
+}
+
+#mission-complete-content.tone-penalty .mission-result-button {
+    filter: saturate(0.9);
+}
+
 #universal-modal button:not(.close-btn) {
     min-width: 0;
     flex-basis: 0;
@@ -1086,7 +1023,6 @@ body {
     flex-grow: 2;
 }
 
-/* 배지 슬롯 스타일 */
 .badge-slot {
     width: 115px;
     height: 150px;
@@ -1115,38 +1051,100 @@ body {
     justify-content: center;
 }
 
-.badge-item.selected-badge {
-    border: 5px solid #FFD700 !important;
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4) !important;
-    background: white !important;
-}
-
-.badge-item.selected-badge::before {
-    content: '★';
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    width: 40px;
-    height: 40px;
-    background: #FFD700;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: black;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-}
-
 .badge-item.locked {
-    opacity: 0.4;
-    filter: grayscale(1);
+    border-color: rgba(148, 163, 184, 0.5);
+    background: rgba(248, 250, 252, 0.82) !important;
 }
 
-/* ===== 둥근 사각형 배지 디자인 (Rounded Square Badge Design) ===== */
+.badge-item.is-pinned {
+    border-color: rgba(96, 165, 250, 0.35) !important;
+}
+
+.badge-item.is-pinned .badge-pinned-pill {
+    color: #1e40af;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.14), rgba(96, 165, 250, 0.12));
+    border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.badge-item:hover {
+    transform: none !important;
+}
+
+.badge-item:active {
+    transform: scale(0.985) !important;
+    filter: brightness(0.98);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16) !important;
+}
+
+.badge-pinned-pill {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.2px;
+    color: #334155;
+    background: rgba(30, 64, 175, 0.1);
+    border: 1px solid rgba(30, 64, 175, 0.24);
+}
+
+.badge-status {
+    width: 100%;
+    border-radius: 14px;
+    padding: 10px;
+    background: #eff6ff;
+}
+
+.badge-item.locked .badge-status {
+    background: rgba(241, 245, 249, 0.95);
+}
+
+.badge-status-label {
+    margin-bottom: 4px !important;
+}
+
+.badge-status-value {
+    margin-bottom: 6px !important;
+}
+
+.badge-progress {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.24);
+    overflow: hidden;
+}
+
+.badge-progress-fill {
+    --badge-progress: 0%;
+    width: var(--badge-progress);
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(96, 165, 250, 0.85), rgba(59, 130, 246, 0.95));
+}
+
+.badge-item.locked .tier-badge {
+    filter: grayscale(0.15) !important;
+}
+
+.badge-item.locked .tier-icon {
+    color: rgba(15, 23, 42, 0.78) !important;
+}
+
+.badge-item.locked .badge-status-label,
+.badge-item.locked .badge-status-value {
+    opacity: 0.95 !important;
+}
+
 .tier-badge {
+    --tier-surface-1: #f1f5f9;
+    --tier-surface-2: #94a3b8;
+    --tier-ring: rgba(148, 163, 184, 0.4);
+    --tier-shadow: 0 0 18px rgba(71, 85, 105, 0.18);
+    --tier-gloss: rgba(255, 255, 255, 0.2);
     position: relative;
     width: 80px;
     height: 80px;
@@ -1162,7 +1160,8 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: inherit;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--tier-surface-1) 0%, var(--tier-surface-2) 100%);
     opacity: 0.9;
     z-index: 1;
 }
@@ -1187,30 +1186,74 @@ body {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* 티어별 색상 및 광택 (Bronze, Silver, Gold, Purple) */
 .tier-bronze {
-    background: linear-gradient(135deg, #783F1D 0%, #A0522D 100%);
-    box-shadow: 0 0 25px rgba(120, 63, 29, 0.4);
-    border: 4px solid rgba(160, 82, 45, 0.6);
+    --tier-surface-1: #6b3412;
+    --tier-surface-2: #ab5508;
+    --tier-ring: rgba(181, 116, 58, 0.42);
+    --tier-shadow: 0 8px 20px rgba(120, 63, 29, 0.24);
+    --tier-gloss: rgba(255, 235, 205, 0.35);
 }
 
 .tier-silver {
-    background: linear-gradient(135deg, #475569 0%, #94a3b8 100%);
-    box-shadow: 0 0 25px rgba(71, 85, 105, 0.4);
-    border: 4px solid rgba(148, 163, 184, 0.6);
+    --tier-surface-1: #334155;
+    --tier-surface-2: #64748b;
+    --tier-ring: rgba(148, 163, 184, 0.42);
+    --tier-shadow: 0 8px 20px rgba(71, 85, 105, 0.24);
+    --tier-gloss: rgba(203, 213, 225, 0.35);
 }
 
 .tier-gold {
-    background: linear-gradient(135deg, #B8860B 0%, #FFD700 100%);
-    box-shadow: 0 0 35px rgba(255, 215, 0, 0.6);
-    border: 4px solid rgba(255, 248, 220, 0.8);
+    --tier-surface-1: #a16207;
+    --tier-surface-2: #ca8a04;
+    --tier-ring: rgba(250, 204, 21, 0.46);
+    --tier-shadow: 0 8px 20px rgba(161, 98, 7, 0.24);
+    --tier-gloss: rgba(255, 251, 235, 0.35);
 }
 
-/* 영웅 등급 - 보라색 (Diamond 티어 매핑) */
 .tier-diamond {
-    background: linear-gradient(135deg, #4A148C 0%, #7B1FA2 100%);
-    box-shadow: 0 0 35px rgba(123, 31, 162, 0.6);
-    border: 4px solid rgba(225, 190, 231, 0.8);
+    --tier-surface-1: #6d28d9;
+    --tier-surface-2: #7c3aed;
+    --tier-ring: rgba(196, 181, 253, 0.56);
+    --tier-shadow: 0 8px 20px rgba(109, 40, 217, 0.22);
+    --tier-gloss: rgba(238, 232, 255, 0.34);
+}
+
+.tier-badge {
+    border: 3px solid var(--tier-ring);
+    box-shadow: var(--tier-shadow);
+    background: linear-gradient(135deg, var(--tier-surface-1) 0%, var(--tier-surface-2) 100%);
+}
+
+.tier-badge::after {
+    background: linear-gradient(135deg, var(--tier-gloss) 0%, transparent 60%);
+}
+
+.tier-badge .tier-icon {
+    color: #ffffff !important;
+}
+
+.badge-item.is-pinned.tier-bronze .badge-pinned-pill {
+    color: #7c2d12;
+    background: rgba(146, 64, 14, 0.14);
+    border-color: rgba(180, 83, 9, 0.36);
+}
+
+.badge-item.is-pinned.tier-silver .badge-pinned-pill {
+    color: #334155;
+    background: rgba(71, 85, 105, 0.13);
+    border-color: rgba(100, 116, 139, 0.35);
+}
+
+.badge-item.is-pinned.tier-gold .badge-pinned-pill {
+    color: #92400e;
+    background: rgba(161, 98, 7, 0.14);
+    border-color: rgba(234, 179, 8, 0.4);
+}
+
+.badge-item.is-pinned.tier-diamond .badge-pinned-pill {
+    color: #5b21b6;
+    background: rgba(109, 40, 217, 0.13);
+    border-color: rgba(167, 139, 250, 0.35);
 }
 
 .tier-badge.scale-125 {
@@ -1219,9 +1262,6 @@ body {
     border-radius: 32px;
 }
 
-/* --- [USER REQUEST] 모달 및 설정창 Z-Index 버그 수정 --- */
-
-/* 1. 모든 모달 컨테이너의 최상단 배치 강제 */
 #universal-modal,
 #password-modal,
 #mission-complete-modal,
@@ -1231,12 +1271,9 @@ body {
 #day-detail-modal,
 #history-full-modal {
     z-index: 9999 !important;
-    /* 설정 화면(z-index: 150)보다 훨씬 높게 설정 */
     display: none;
-    /* 기본은 숨김 */
-}
+    }
 
-/* 2. 'hidden' 클래스가 제거되었을 때 모달을 확실히 보여줌 */
 #universal-modal:not(.hidden),
 #password-modal:not(.hidden),
 #mission-complete-modal:not(.hidden),
@@ -1250,7 +1287,6 @@ body {
     inset: 0 !important;
 }
 
-/* 3. 모달 내부 콘텐츠(흰색 박스)가 설정 화면 위로 올라오도록 설정 */
 #universal-modal .card,
 #password-modal .card,
 #gift-shop-modal .card,
@@ -1262,26 +1298,20 @@ body {
     position: relative !important;
 }
 
-/* 4. 설정 화면의 z-index를 상대적으로 낮춤 (대시보드와 동일한 수준) */
 #settings-screen {
     z-index: 150 !important;
     position: relative;
 }
 
-/* --- [USER REQUEST] 대시보드 리뉴얼 & 배지 폴리싱 --- */
-
-/* 1. 배지 텍스트 간격 확보 */
 .tier-badge.scale-125 {
     width: 85px !important;
     height: 85px !important;
     margin: 0 auto 35px auto !important;
-    /* 배지 아이콘 아래 여백 대폭 추가 */
-}
+    }
 
 .tier-badge.scale-125 .tier-icon {
     font-size: 55px !important;
-    /* 배지가 커진 만큼 아이콘도 확대 */
-}
+    }
 
 #main-badge-display p.text-3xl {
     font-size: 1.3rem !important;
@@ -1291,7 +1321,6 @@ body {
 }
 
 
-/* 대시보드 내부 스크롤바 숨김 (깔끔하게) */
 #dashboard-screen::-webkit-scrollbar {
     display: none;
 }
@@ -1301,9 +1330,6 @@ body {
     scrollbar-width: none;
 }
 
-/* --- [USER REQUEST] Dashboard Overhaul: Hall of Fame Layout --- */
-
-/* 선물 히스토리 카드 디자인 */
 .gift-history-card {
     background: white !important;
     border: 2px solid #F1F5F9 !important;
@@ -1336,7 +1362,6 @@ body {
     border-radius: 12px;
 }
 
-/* 칭찬 행동 데이터 꽂히는 스타일 */
 .top-mission-item {
     background: rgba(255, 255, 255, 0.15) !important;
     padding: 15px 20px !important;
@@ -1347,25 +1372,12 @@ body {
     backdrop-filter: blur(5px);
 }
 
-/* 차트 막대 스타일 */
 .chart-bar {
     background: #6366F1 !important;
     border-radius: 8px 8px 0 0 !important;
     width: 30px !important;
 }
 
-/* 상태 스타일 */
-.badge-item.locked .tier-badge {
-    background: #d1d5db !important;
-    box-shadow: none !important;
-    border: none !important;
-}
-
-.badge-item.locked .tier-icon {
-    opacity: 0.5;
-}
-
-/* 스크롤바 */
 ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -1386,7 +1398,6 @@ body {
     border-radius: 10px;
 }
 
-/* 스크롤바 숨기기 유틸리티 */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
@@ -1396,7 +1407,6 @@ body {
     scrollbar-width: none;
 }
 
-/* 폭죽 효과 */
 .confetti-piece {
     position: absolute;
     width: 12px;
@@ -1405,7 +1415,6 @@ body {
     pointer-events: none;
 }
 
-/* 숫자 카운트 애니메이션 */
 @keyframes countUp {
     0% {
         opacity: 0;
@@ -1430,14 +1439,12 @@ body {
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     backdrop-filter: blur(10px);
     min-height: 0;
-    /* 내부 박스 무너짐 방지 */
-}
+    }
 
 .bento-card:hover {
     transform: translateY(-5px);
 }
 
-/* 벤트 카드 테마별 마스터 피스 */
 .bento-amber {
     background: linear-gradient(135deg, #fff9f0 0%, #fff1e0 100%) !important;
     box-shadow: 0 20px 40px rgba(245, 158, 11, 0.1) !important;
@@ -1480,7 +1487,6 @@ body {
     border-top: 10px solid #8b5cf6 !important;
 }
 
-/* 텍스트 렌더링 최적화 */
 .tracking-tight {
     letter-spacing: -0.05em;
 }
@@ -1489,7 +1495,6 @@ body {
     font-weight: 950;
 }
 
-/* 탭 버튼 */
 .tab-button {
     transition: all 0.3s;
     position: relative;
@@ -1511,51 +1516,36 @@ body {
     border-radius: 2px;
 }
 
-/* --- [USER REQUEST] Goal Mission Golden Ratio Layout (3 Items) --- */
-/* 1. 목표 리스트 컨테이너: 높이 100% 활용 */
 #goal-display {
     display: flex !important;
     flex-direction: column !important;
     justify-content: flex-start !important;
-    /* 위에서부터 채움 */
     gap: 2% !important;
-    /* 사이 간격도 비율로 (3개 사이 틈) */
     height: 100% !important;
     padding: 2px !important;
     overflow: hidden !important;
-    /* 튀어나옴 방지 */
-}
+    }
 
-/* 2. 개별 목표 카드: 무조건 높이의 32% 차지 */
 #goal-display .goal-card {
     flex: none !important;
-    /* 맘대로 늘어나거나 줄어들지 않음 */
     height: 32% !important;
-    /* 🌟핵심: 3개가 들어가면 96% + 갭4% = 100% */
     padding: 0 16px !important;
-    /* 좌우 패딩만 주고 상하는 자동 정렬 */
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
-    /* 내용물 수직 중앙 정렬 */
     border-radius: 20px !important;
 }
 
-/* 3. 내용물 크기 최적화 (카드가 작아질 경우 대비) */
 #goal-display h4 {
     font-size: clamp(0.9rem, 2vh, 1.2rem) !important;
-    /* 화면 높이에 따라 글자도 변함 */
     margin-bottom: 2px !important;
 }
 
 #goal-display .h-6 {
     height: 15% !important;
-    /* 진행바 높이도 카드 크기에 비례 */
     min-height: 8px !important;
 }
 
-/* --- UNIFIED SPACING FIX --- */
-/* 태블릿 화면에서 모든 영역의 간격을 16px로 통일하여 균형 맞춤 */
 @media (orientation: landscape) {
     #home-screen {
         gap: 16px !important;
@@ -1566,7 +1556,6 @@ body {
         gap: 16px !important;
     }
 
-    /* Header Internal Gaps */
     .header-grid>.col-span-8 {
         gap: 16px !important;
     }
@@ -1575,7 +1564,6 @@ body {
         gap: 16px !important;
     }
 
-    /* Body Columns Internal Gaps */
     .flex-1.grid.grid-cols-12 {
         gap: 16px !important;
     }
@@ -1584,3 +1572,263 @@ body {
         gap: 16px !important;
     }
 }
+
+.mission-card {
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 10px 8px !important;
+    gap: 8px !important;
+}
+
+.mission-card .mission-card-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+}
+
+.mission-card .mission-card-icon-wrap {
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+}
+
+.mission-card .mission-card-icon-image {
+    width: 0;
+    height: 0;
+    display: none !important;
+    object-fit: contain;
+}
+
+.mission-card .mission-card-header .mission-card-icon {
+    font-size: clamp(3.25rem, 4.4vw, 4.5rem) !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+    color: #ffffff !important;
+    filter: drop-shadow(0 1px 2px rgba(7, 20, 52, 0.25));
+}
+
+.mission-card .mission-card-score {
+    margin: 0 !important;
+    font-size: clamp(1rem, 1.3vw, 1.28rem) !important;
+    font-weight: 900 !important;
+    color: #fff !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+}
+
+.mission-card .mission-card-label {
+    margin: 0 !important;
+    color: #fff !important;
+    font-weight: 900 !important;
+    font-size: clamp(0.84rem, 1.03vw, 1rem) !important;
+    line-height: 1.18 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-align: center !important;
+    max-width: 100% !important;
+}
+
+body[data-mission-style="a"] .mission-card {
+    gap: 7px !important;
+    padding: 11px 9px !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+    filter: saturate(0.92);
+}
+
+body[data-mission-style="a"] .mission-card .mission-card-icon-wrap {
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+body[data-mission-style="a"] .mission-card .mission-card-icon {
+    font-size: clamp(3.25rem, 4.4vw, 4.5rem) !important;
+    color: #ffffff !important;
+}
+
+body[data-mission-style="a"] .mission-card .mission-card-score {
+    font-size: clamp(0.82rem, 0.92vw, 0.92rem) !important;
+    border-radius: 999px !important;
+    padding: 2px 9px !important;
+    border: 1px solid rgba(255, 255, 255, 0.24) !important;
+    background: rgba(255, 255, 255, 0.13) !important;
+    opacity: 0.9 !important;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    font-weight: 600 !important;
+    letter-spacing: -0.1px;
+}
+
+body[data-mission-style="a"] .mission-card.mission-positive .mission-card-score {
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow: none;
+}
+
+body[data-mission-style="a"] .mission-card.mission-negative .mission-card-score {
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow: none;
+}
+
+body[data-mission-style="a"] .mission-card .mission-card-label {
+    font-size: clamp(0.88rem, 0.98vw, 0.98rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.2px;
+    font-weight: 700 !important;
+}
+
+body[data-mission-style="a"] .mission-custom-card {
+    border-style: dashed !important;
+    border-width: 1px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30) !important;
+}
+
+@media (orientation: landscape) and (min-width: 900px) {
+    #home-screen {
+        padding: 12px 16px !important;
+        gap: 12px !important;
+    }
+    #home-screen .col-span-8 > .shadow-blue-glow {
+        flex: 4.75 !important;
+    }
+    #home-screen .col-span-8 > .shadow-emerald-glow {
+        flex: 1.35 !important;
+    }
+    #home-screen .shadow-blue-glow > .flex.items-center.justify-between {
+        margin-bottom: 6px !important;
+    }
+    #home-screen .shadow-emerald-glow > h3 {
+        margin-bottom: 8px !important;
+    }
+
+    .header-grid {
+        min-height: 92px !important;
+        gap: 12px !important;
+    }
+
+    #mission-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        grid-template-rows: repeat(4, minmax(78px, 1fr)) !important;
+        grid-auto-rows: minmax(78px, 1fr) !important;
+        gap: 10px !important;
+        padding: 8px 0 !important;
+    }
+
+    #mission-grid .mission-card {
+        min-height: 78px !important;
+        padding: 8px 8px !important;
+    }
+
+    #mission-grid .mission-card .mission-card-header {
+        gap: 6px !important;
+    }
+
+    #mission-grid .mission-card .mission-card-icon-wrap {
+        width: auto !important;
+        height: auto !important;
+    }
+
+    #mission-grid .mission-card .mission-card-icon {
+        font-size: clamp(3rem, 4vw, 4rem) !important;
+    }
+
+    #mission-grid .mission-card .mission-card-score {
+        font-size: 0.86rem !important;
+        padding: 2px 8px !important;
+    }
+
+    #mission-grid .mission-card .mission-card-label {
+        font-size: 0.9rem !important;
+        line-height: 1.12 !important;
+    }
+
+    #week-display {
+        align-items: stretch !important;
+        gap: 8px !important;
+        padding: 0 !important;
+    }
+
+    #week-display .week-day-card,
+    #week-display > .card {
+        min-height: 0 !important;
+        height: 100% !important;
+        padding: 8px 4px !important;
+        gap: 4px !important;
+        align-self: stretch !important;
+    }
+
+    #week-display .week-day-name {
+        display: block !important;
+        font-size: 0.88rem !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+    }
+
+    #week-display .week-day-date {
+        font-size: 1.62rem !important;
+        line-height: 1 !important;
+    }
+
+    #week-display .week-day-score {
+        font-size: 0.96rem !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+    }
+}
+
+
+#mission-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(4, minmax(78px, 1fr)) !important;
+    grid-auto-rows: minmax(78px, 1fr) !important;
+}
+
+#mission-grid .mission-card {
+    height: 100% !important;
+    min-height: 78px !important;
+}
+
+.mission-custom-card {
+    border-style: dashed !important;
+    border-width: 2px !important;
+}
+
+.mission-custom-plus {
+    background: linear-gradient(180deg, #e7f7e9 0%, #d8f1de 100%) !important;
+    border-color: #9bd9a6 !important;
+}
+
+.mission-custom-plus .mission-card-score,
+.mission-custom-plus .mission-card-label {
+    color: #166534 !important;
+}
+
+.mission-custom-minus {
+    background: linear-gradient(180deg, #ffe8e8 0%, #ffdddd 100%) !important;
+    border-color: #f1aaaa !important;
+}
+
+.mission-custom-minus .mission-card-score,
+.mission-custom-minus .mission-card-label {
+    color: #9f1239 !important;
+}
+
+
