@@ -18,6 +18,7 @@ body {
 #app {
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden !important;
     display: flex;
     flex-direction: column;
@@ -187,6 +188,7 @@ body {
         margin: 0 auto;
         overflow: hidden !important;
         height: 100vh !important;
+        height: 100dvh !important;
         display: flex !important;
         flex-direction: column !important;
     }
@@ -480,6 +482,7 @@ body {
     #app {
         overflow: hidden !important;
         height: 100vh !important;
+        height: 100dvh !important;
         width: 100vw !important;
         margin: 0;
         padding: 0;
@@ -492,6 +495,7 @@ body {
         left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
+        height: 100dvh !important;
         z-index: 1000 !important;
         background: #f9fafb !important;
         display: flex !important;
@@ -507,6 +511,7 @@ body {
 
     #dashboard-screen {
         max-height: 100vh !important;
+        max-height: 100dvh !important;
         overflow: hidden !important;
     }
 
@@ -1793,6 +1798,29 @@ body[data-mission-style="a"] .mission-custom-card {
         font-size: 0.96rem !important;
         line-height: 1 !important;
         margin: 0 !important;
+    }
+}
+
+@media (display-mode: standalone) and (orientation: landscape) and (min-width: 900px) {
+    #home-screen {
+        padding: 8px 12px !important;
+        gap: 10px !important;
+    }
+
+    .header-grid {
+        min-height: 84px !important;
+        gap: 10px !important;
+    }
+
+    #mission-grid {
+        grid-template-rows: repeat(4, minmax(74px, 1fr)) !important;
+        grid-auto-rows: minmax(74px, 1fr) !important;
+        gap: 8px !important;
+        padding: 6px 0 !important;
+    }
+
+    #mission-grid .mission-card {
+        min-height: 74px !important;
     }
 }
 
