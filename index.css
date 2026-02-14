@@ -1420,6 +1420,81 @@ body {
     backdrop-filter: blur(5px);
 }
 
+#dashboard-screen .top-mission-item,
+#dashboard-screen #gift-purchase-history .history-item {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    margin: 0 !important;
+    padding: 12px 4px !important;
+    border-bottom: 1px solid #e6edf6 !important;
+}
+
+#dashboard-screen #top-missions-good > :not([hidden]) ~ :not([hidden]),
+#dashboard-screen #gift-purchase-history > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0 !important;
+}
+
+#dashboard-screen #gift-purchase-history .history-item:last-child {
+    border-bottom: 0 !important;
+}
+
+#dashboard-screen .top-mission-item .flex.items-center.gap-4,
+#dashboard-screen #gift-purchase-history .history-item .flex.items-center.gap-4 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+#dashboard-screen .top-mission-item .w-12.h-12.rounded-2xl {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: transparent !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dashboard-screen #gift-purchase-history .history-item .text-sm.font-bold.text-gray-400.w-10 {
+    flex: 0 0 auto;
+    min-width: 44px;
+    color: #94a3b8;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+#dashboard-screen .top-mission-item .text-xl.font-bold.text-gray-800,
+#dashboard-screen #gift-purchase-history .history-item .font-bold.text-gray-800 {
+    color: #0f172a;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.18;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#dashboard-screen .top-mission-item .text-2xl.font-black.text-gray-900,
+#dashboard-screen #gift-purchase-history .history-item > .font-black {
+    flex: 0 0 auto;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+#dashboard-screen .top-mission-item .text-sm.text-gray-400.ml-1.font-bold {
+    margin-left: 4px;
+    color: #94a3b8;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
 .chart-bar {
     background: #6366F1 !important;
     border-radius: 8px 8px 0 0 !important;
