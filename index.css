@@ -1767,6 +1767,23 @@ body[data-mission-style="a"] .mission-custom-card {
         letter-spacing: -0.18px;
     }
 
+    #main-badge-display .tier-badge.scale-125 {
+        width: 62px !important;
+        height: 62px !important;
+        border-radius: 16px !important;
+        margin: 0 auto 6px auto !important;
+    }
+
+    #main-badge-display .tier-badge.scale-125 .tier-icon {
+        font-size: 38px !important;
+    }
+
+    #main-badge-display p.text-3xl {
+        margin-top: 2px !important;
+        font-size: 1rem !important;
+        line-height: 1.05 !important;
+    }
+
     #week-display {
         align-items: stretch !important;
         gap: 8px !important;
@@ -1821,6 +1838,21 @@ body[data-mission-style="a"] .mission-custom-card {
 
     #mission-grid .mission-card {
         min-height: 74px !important;
+    }
+
+    #main-badge-display .tier-badge.scale-125 {
+        width: 58px !important;
+        height: 58px !important;
+        margin-bottom: 4px !important;
+    }
+
+    #main-badge-display .tier-badge.scale-125 .tier-icon {
+        font-size: 34px !important;
+    }
+
+    #main-badge-display p.text-3xl {
+        margin-top: 1px !important;
+        font-size: 0.94rem !important;
     }
 }
 
