@@ -28,6 +28,33 @@
     return badges;
 }
 
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function formatBadgeName(name) {
+    const raw = String(name || '');
+    const match = raw.match(/^(.*)\s(초보|중수|고수|영웅|전설)$/);
+    if (!match) return escapeHtml(raw);
+
+    const base = escapeHtml(match[1]);
+    const rank = match[2];
+    const rankClassMap = {
+        '초보': 'beginner',
+        '중수': 'intermediate',
+        '고수': 'expert',
+        '영웅': 'hero',
+        '전설': 'hero'
+    };
+    const rankClass = rankClassMap[rank] || 'hero';
+    return `${base} <span class="badge-rank badge-rank--${rankClass}">${escapeHtml(rank)}</span>`;
+}
+
 function checkBadgeUnlock(missionLabel) {
     const count = state.missionCounts[missionLabel] || 0;
     const badges = getBadgeDefinitions();
@@ -74,7 +101,7 @@ function renderMainBadge() {
             <div class="tier-badge tier-${badge.tier} scale-125 mb-10">
                 <i class="ph ${getPhosphorIconClass(badge.icon)} tier-icon"></i>
             </div>
-            <p class="text-3xl font-black text-gray-800 text-center px-2 w-full break-keep">${badge.name}</p>
+            <p class="text-3xl font-black text-gray-800 text-center px-2 w-full break-keep">${formatBadgeName(badge.name)}</p>
         `;
         display.appendChild(slot);
     });
@@ -116,7 +143,7 @@ function openBadgeCollection() {
                 <div class="tier-badge tier-${badge.tier} mb-4">
                     <i class="ph ${isEarned ? getPhosphorIconClass(badge.icon) : 'ph-lock'} tier-icon"></i>
                 </div>
-                <p class="font-black text-gray-800 text-center text-2xl mb-4 badge-name">${badge.name}</p>
+                <p class="font-black text-gray-800 text-center text-2xl mb-4 badge-name">${formatBadgeName(badge.name)}</p>
                 <div class="badge-status">
                     <p class="badge-status-label ${isEarned ? 'text-primary' : 'text-gray-500'}">
                         ${isEarned ? '? 달성 완료' : '미션 진행 중'}
