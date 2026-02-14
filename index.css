@@ -1309,18 +1309,24 @@ body {
 }
 
 .tier-badge.scale-125 {
-    width: 85px !important;
-    height: 85px !important;
-    margin: 0 auto 35px auto !important;
+    width: 82px !important;
+    height: 82px !important;
+    margin: 0 auto 12px auto !important;
     }
 
 .tier-badge.scale-125 .tier-icon {
-    font-size: 55px !important;
+    font-size: 48px !important;
     }
 
+#main-badge-display .card {
+    padding: 12px 10px !important;
+    justify-content: flex-start !important;
+}
+
 #main-badge-display p.text-3xl {
-    font-size: 1.3rem !important;
-    margin-top: 15px !important;
+    font-size: 1.08rem !important;
+    margin-top: 6px !important;
+    line-height: 1.18 !important;
     font-weight: 800;
     color: #334155 !important;
 }
@@ -1768,20 +1774,25 @@ body[data-mission-style="a"] .mission-custom-card {
     }
 
     #main-badge-display .tier-badge.scale-125 {
-        width: 62px !important;
-        height: 62px !important;
-        border-radius: 16px !important;
-        margin: 0 auto 6px auto !important;
+        width: 74px !important;
+        height: 74px !important;
+        border-radius: 18px !important;
+        margin: 0 auto 9px auto !important;
     }
 
     #main-badge-display .tier-badge.scale-125 .tier-icon {
-        font-size: 38px !important;
+        font-size: 45px !important;
+    }
+
+    #main-badge-display .card {
+        padding: 10px 8px !important;
+        justify-content: flex-start !important;
     }
 
     #main-badge-display p.text-3xl {
-        margin-top: 2px !important;
-        font-size: 1rem !important;
-        line-height: 1.05 !important;
+        margin-top: 5px !important;
+        font-size: 1.02rem !important;
+        line-height: 1.14 !important;
     }
 
     #week-display {
@@ -1841,18 +1852,24 @@ body[data-mission-style="a"] .mission-custom-card {
     }
 
     #main-badge-display .tier-badge.scale-125 {
-        width: 58px !important;
-        height: 58px !important;
-        margin-bottom: 4px !important;
+        width: 70px !important;
+        height: 70px !important;
+        margin-bottom: 7px !important;
     }
 
     #main-badge-display .tier-badge.scale-125 .tier-icon {
-        font-size: 34px !important;
+        font-size: 42px !important;
+    }
+
+    #main-badge-display .card {
+        padding: 9px 8px !important;
+        justify-content: flex-start !important;
     }
 
     #main-badge-display p.text-3xl {
-        margin-top: 1px !important;
-        font-size: 0.94rem !important;
+        margin-top: 4px !important;
+        font-size: 0.99rem !important;
+        line-height: 1.12 !important;
     }
 }
 
